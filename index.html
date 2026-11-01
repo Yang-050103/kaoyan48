@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="48天冲刺">
+<title>48天冲刺 · 数一/英一/408</title>
+<style>
+:root{
+  /* 背景与表面 */
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f2f4f7; --line:#e8eaee; --line-2:#dfe3e9;
+  /* 文字 */
+  --tx:#111827; --tx-2:#4b5563; --tx-3:#9ca3af;
+  /* 主色与科目色（浅底 + 深字） */
+  --blue:#2563eb; --blue-ink:#1d4ed8; --blue-wash:#eff4ff;
+  --math:#2563eb; --math-wash:#eff4ff;
+  --en:#059669; --en-wash:#ecfdf5;
+  --cs:#d97706; --cs-wash:#fff7ed;
+  --rev:#7c3aed; --rev-wash:#f5f3ff;
+  --red:#dc2626; --red-wash:#fef2f2;
+  /* 形状 */
+  --r:16px; --r-sm:12px; --gap:12px;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -10px rgba(16,24,40,.10);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{background:var(--bg);color-scheme:light}
+input,textarea,select{-webkit-appearance:none;appearance:none;font-size:16px;font-family:inherit}
+input[type="date"]{min-height:40px}
+body{
+  background:var(--bg);color:var(--tx);font-family:var(--font);font-size:15px;line-height:1.55;
+  padding-bottom:calc(76px + var(--safe-b));overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:var(--blue)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* ---------- header ---------- */
+header{padding:22px 0 4px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{font-size:13px;letter-spacing:.01em;color:var(--tx-3);font-weight:500}
+.brand b{color:var(--tx);font-weight:700;letter-spacing:-.01em}
+.settingsBtn{font-size:12.5px;color:var(--tx-2);border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;background:var(--surface)}
+.hero{display:flex;align-items:flex-end;gap:16px;margin-top:14px}
+.count{display:flex;align-items:baseline;gap:6px}
+.count .num{font-family:var(--mono);font-size:60px;line-height:.9;font-weight:700;letter-spacing:-.045em;color:var(--tx)}
+.count .unit{font-size:14px;color:var(--tx-3);font-weight:500}
+.heroMeta{flex:1;min-width:0;padding-bottom:6px}
+.heroMeta .l1{font-size:13px;color:var(--tx-2);font-weight:500}
+.heroMeta .l2{font-size:12px;color:var(--tx-3);margin-top:2px}
+.dbar{height:6px;border-radius:99px;background:#eceef2;margin-top:16px;overflow:hidden}
+.dbar>i{display:block;height:100%;border-radius:99px;background:var(--blue);transition:width .5s ease}
+.dbarTxt{display:flex;justify-content:space-between;font-size:11.5px;color:var(--tx-3);margin-top:8px}
+
+/* ---------- tabs ---------- */
+nav.tabs{display:flex;gap:18px;position:sticky;top:0;z-index:20;background:rgba(246,247,249,.92);backdrop-filter:blur(12px);
+  padding:10px 0 0;margin-top:14px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:0 0 10px;font-size:13.5px;color:var(--tx-3);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab.on{color:var(--tx);border-bottom-color:var(--tx)}
+.tab:active{color:var(--tx-2)}
+
+/* ---------- generic ---------- */
+section.view{display:none;padding-top:18px}
+section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:var(--gap);box-shadow:var(--shadow)}
+.card h3{margin:0 0 12px;font-size:14px;color:var(--tx);display:flex;align-items:center;gap:8px;font-weight:650;letter-spacing:-.01em}
+.card h3 .sub{font-size:11.5px;color:var(--tx-3);font-weight:500;margin-left:auto;text-align:right}
+.muted{color:var(--tx-3)}
+.small{font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--tx-2);background:var(--surface)}
+.chip.math{color:var(--math);border-color:#dbe6ff;background:var(--math-wash)}
+.chip.cs{color:var(--cs);border-color:#fde8cf;background:var(--cs-wash)}
+.chip.en{color:var(--en);border-color:#d1fae5;background:var(--en-wash)}
+.chip.rev{color:var(--rev);border-color:#e9e3ff;background:var(--rev-wash)}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill{font-size:10.5px;padding:1px 7px;border-radius:999px;background:var(--surface-2);color:var(--tx-3)}
+
+/* day intro */
+.dayhead{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.dayhead .d1{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.dayhead .d2{font-size:12px;color:var(--tx-2);line-height:1.4}
+.dayhead .d3{margin-left:auto;text-align:right}
+.stepper{display:flex;gap:6px;justify-content:flex-end}
+.stepper button{min-width:34px;height:32px;padding:0 10px;border-radius:9px;background:var(--surface);border:1px solid var(--line-2);font-size:13px;font-weight:600;color:var(--tx-2)}
+.stepper button:disabled{opacity:.4}
+.phasebar{display:flex;gap:6px;margin:2px 0 16px}
+.phasebar div{flex:1;height:4px;border-radius:9px;background:#eceef2;overflow:hidden}
+.phasebar i{display:block;height:100%;background:var(--blue)}
+
+/* focus card */
+.focus{border-radius:var(--r);padding:16px;margin-bottom:12px;border:1px solid var(--line);position:relative;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.focus.math{background:linear-gradient(135deg,var(--math-wash),#fff 72%);border-color:#dbe6ff}
+.focus.cs{background:linear-gradient(135deg,var(--cs-wash),#fff 72%);border-color:#fde8cf}
+.focus.rev{background:linear-gradient(135deg,var(--rev-wash),#fff 72%);border-color:#e9e3ff}
+.focus .k{font-size:11px;letter-spacing:.08em;color:var(--tx-3);font-weight:600;text-transform:uppercase}
+.focus .t{font-size:19px;font-weight:700;margin:5px 0 3px;letter-spacing:-.02em}
+.focus .s{font-size:12.5px;color:var(--tx-2)}
+.focus .go{display:inline-block;margin-top:10px;font-size:11.5px;padding:6px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);color:var(--tx-2);font-weight:600}
+
+/* blocks */
+.block{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:8px;overflow:hidden;background:var(--surface)}
+.block.done{opacity:.62}
+.block.now{border-color:#c7d7fb;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.block.open>header{border-bottom:1px solid var(--line)}
+.block>header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+.time{font-family:var(--mono);font-size:11px;color:var(--tx-3);min-width:84px;letter-spacing:-.02em}
+.block .name{font-size:13.5px;font-weight:600;flex:1;min-width:0;letter-spacing:-.01em}
+.block .dur{font-size:11px;color:var(--tx-3);font-family:var(--mono)}
+.caret{font-size:10px;color:var(--tx-3);transition:transform .2s}
+.block.open .caret{transform:rotate(90deg)}
+.block .body{display:none;padding:2px 14px 12px}
+.block.open .body{display:block}
+.task{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.task:first-child{border-top:0}
+.task label{display:flex;gap:10px;align-items:flex-start;flex:1;font-size:13px;color:var(--tx-2);cursor:pointer;line-height:1.5}
+.task.done label{color:var(--tx-3);text-decoration:line-through}
+.cb{flex:0 0 19px;width:19px;height:19px;border-radius:5px;border:1.5px solid #d1d5db;margin-top:1px;position:relative;transition:.15s;background:var(--surface)}
+.task.done .cb{background:var(--blue);border-color:var(--blue)}
+.task.done .cb::after{content:"";position:absolute;left:6px;top:2px;width:4.5px;height:9.5px;border:2px solid #fff;border-top:0;border-left:0;transform:rotate(42deg)}
+.tag{font-size:10.5px;padding:1px 6px;border-radius:6px;background:var(--surface-2);color:var(--tx-3);margin-left:4px;white-space:nowrap}
+
+/* progress strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 11px}
+.kpi b{display:block;font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:-.03em;color:var(--tx)}
+.kpi span{font-size:10.5px;color:var(--tx-3)}
+.kpi.math b{color:var(--math)} .kpi.cs b{color:var(--cs)} .kpi.en b{color:var(--en)}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .wd{font-size:10px;color:var(--tx-3);text-align:center;padding-bottom:3px}
+.cell{aspect-ratio:1/1.1;border-radius:8px;border:1px solid var(--line);background:var(--surface);padding:4px 4px 3px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.cell .d{font-size:9.5px;color:var(--tx-3);font-family:var(--mono)}
+.cell .dot{font-size:8.5px;font-weight:600;line-height:1.15;color:var(--tx-2);word-break:break-all}
+.cell.math{border-color:#dbe6ff;background:var(--math-wash)}
+.cell.cs{border-color:#fde8cf;background:var(--cs-wash)}
+.cell.mock{border-color:#e9e3ff;background:var(--rev-wash)}
+.cell.rev{background:var(--surface-2)}
+.cell .fill{position:absolute;left:0;bottom:0;width:100%;background:rgba(37,99,235,.13);pointer-events:none}
+.cell.today{outline:2px solid var(--tx);outline-offset:-1px}
+.cell.past{opacity:.78}
+.cell .mk{position:absolute;right:3px;top:2px;font-size:9px;color:var(--cs);font-weight:700}
+
+/* charts */
+.chart{width:100%;display:block;overflow:visible}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--tx-2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+/* tables / lists */
+.exam{display:flex;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.exam:first-child{border-top:0}
+.exam .no{font-family:var(--mono);font-size:11px;color:var(--tx-3);width:44px;flex:0 0 auto}
+.exam .tt{flex:1;min-width:0}
+.exam .tt b{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.exam .tt span{font-size:11px;color:var(--tx-3)}
+.exam .acts{display:flex;gap:6px;align-items:center}
+.mini{font-size:11.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);color:var(--tx-2);background:var(--surface);font-weight:500}
+.mini.on{background:var(--blue-wash);border-color:#c7d7fb;color:var(--blue-ink)}
+.mini.rev.on{background:var(--en-wash);border-color:#d1fae5;color:#047857}
+.exam.hidden{display:none}
+.subjtitle{display:flex;align-items:center;gap:8px;margin:18px 0 2px;font-size:13px;font-weight:650;letter-spacing:-.01em}
+.subjtitle .ln{flex:1;height:1px;background:var(--line)}
+
+/* ring */
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ring{text-align:center;position:relative}
+.ring svg{width:100%;max-width:92px;height:auto;display:block;margin:0 auto}
+.ring .v{font-family:var(--mono);font-size:14px;font-weight:700;position:absolute;top:0;left:0;right:0;height:92px;
+  display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
+.ring .l{font-size:11px;color:var(--tx-3);margin-top:4px}
+
+/* weekly bars */
+.wk{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:11.5px;color:var(--tx-2)}
+.wk .lbl{width:64px;color:var(--tx-3)}
+.wk .bar{flex:1;height:7px;border-radius:9px;background:#eef0f4;overflow:hidden}
+.wk .bar i{display:block;height:100%;background:var(--blue);border-radius:9px}
+.wk .pct{width:38px;text-align:right;font-family:var(--mono);color:var(--tx-3)}
+
+/* review tab */
+.mistake{border-left:3px solid var(--line-2);padding:8px 0 8px 12px;margin:8px 0;background:var(--surface-2);border-radius:0 10px 10px 0}
+.mistake b{font-size:13px;font-weight:600}
+.mistake p{margin:2px 0;font-size:12px;color:var(--tx-2);white-space:pre-wrap}
+.mistake .row{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.inp{background:var(--surface);border:1px solid var(--line-2);color:var(--tx);border-radius:10px;padding:9px 11px;font-size:13px;font-family:inherit;width:100%}
+.inp:focus{outline:none;border-color:#b6c8f5;box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+textarea.inp{resize:vertical;min-height:68px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{background:var(--blue);color:#fff;font-weight:600;font-size:13px;padding:10px 15px;border-radius:10px;letter-spacing:-.01em}
+.btn:active{opacity:.86}
+.btn.ghost{background:var(--surface);border:1px solid var(--line-2);color:var(--tx-2)}
+.btn.sm{font-size:12px;padding:7px 11px;border-radius:8px}
+.btn.danger{background:var(--red-wash);border:1px solid #fecaca;color:var(--red)}
+.empty{text-align:center;color:var(--tx-3);font-size:12.5px;padding:26px 10px}
+
+/* bottom nav */
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);padding:7px 4px calc(7px + var(--safe-b));display:flex;max-width:720px;margin:0 auto}
+nav.bottom button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;font-size:10px;color:var(--tx-3);font-weight:600}
+nav.bottom button .ic{font-size:17px;line-height:1}
+nav.bottom button.on{color:var(--tx)}
+
+/* sheet */
+.mask{position:fixed;inset:0;background:rgba(17,24,39,.32);z-index:40;display:none;backdrop-filter:blur(2px)}
+.mask.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--surface);border-radius:20px 20px 0 0;border-top:1px solid var(--line);
+  max-height:88vh;overflow:auto;padding:8px 18px calc(22px + var(--safe-b));transform:translateY(102%);transition:transform .26s ease;max-width:720px;margin:0 auto;box-shadow:0 -12px 40px -20px rgba(16,24,40,.25)}
+.sheet.on{transform:none}
+.grab{width:42px;height:4px;border-radius:9px;background:#e5e7eb;margin:6px auto 14px}
+.sheet h3{margin:0 0 6px;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.sheet .hint{font-size:12px;color:var(--tx-3);margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--tx-2);margin-bottom:6px;font-weight:500}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,14px);background:var(--tx);border:1px solid var(--tx);color:#fff;
+  padding:9px 16px;border-radius:999px;font-size:12.5px;opacity:0;pointer-events:none;transition:.22s;z-index:60;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
+.note{font-size:12px;color:var(--tx-3);line-height:1.7}
+.note b{color:var(--tx-2)}
+
+/* ---------- 日程编辑 ---------- */
+.editDay{display:block;margin-top:7px;font-size:11.5px;padding:6px 10px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--surface);color:var(--tx-2);font-weight:600}
+.block .mini[data-editb]{padding:2px 7px;font-size:11px;color:var(--tx-3);background:var(--surface);border:1px solid var(--line)}
+.block .mini[data-editb]:active{background:var(--surface-2)}
+.eb{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface);overflow:hidden}
+.eb.open{border-color:#c7d7fb;box-shadow:0 0 0 3px rgba(37,99,235,.06)}
+.ehead{display:flex;align-items:center;gap:8px;padding:11px 12px;cursor:pointer}
+.eb.open .ehead{background:var(--blue-wash)}
+.etime{font-family:var(--mono);font-size:11px;color:var(--tx-2);min-width:84px}
+.ename{flex:1;min-width:0;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.emins{font-size:10.5px;color:var(--tx-3);font-family:var(--mono)}
+.eb .caret{font-size:10px;color:var(--tx-3);transition:transform .2s}
+.eb.open .caret{transform:rotate(90deg)}
+.ebody{display:none;padding:12px;border-top:1px solid var(--line)}
+.eb.open .ebody{display:block}
+.ebody label{display:block;font-size:11.5px;color:var(--tx-3);margin-bottom:4px}
+.ebody .inp{font-size:14px!important;padding:8px 10px}
+.ebody .row2{gap:8px}
+.trow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.trow .inp{flex:1;min-width:0}
+.ebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+/* 各科投入 */
+.mods .sub{color:var(--tx-3)}
+.modsum{margin-top:2px}
+.modrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+.modrow .mname{width:62px;flex:0 0 auto;font-size:12px;font-weight:600}
+.modrow .mbar{flex:1;height:8px;border-radius:9px;background:#eef0f4;overflow:hidden}
+.modrow .mbar i{display:block;height:100%;border-radius:9px;transition:width .4s}
+.modrow .mval{width:74px;text-align:right;font-family:var(--mono);font-size:11.5px;color:var(--tx-2);flex:0 0 auto}
+.casc{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:6px;font-size:12.5px;color:var(--tx-2)}
+.casc label{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--tx);margin-bottom:5px}
+.casc input[type=checkbox]{width:17px;height:17px;accent-color:var(--blue)}
+@media(max-width:360px){.count .num{font-size:50px}.strip{grid-template-columns:repeat(2,1fr)}nav.tabs{gap:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brandrow">
+      <div class="brand"><b>48 天冲刺</b> · 数一 / 英一 / 408</div>
+      <button class="settingsBtn" id="openSettings">⚙ 设置</button>
+    </div>
+    <div class="hero">
+      <div class="count"><span class="num" id="dNum">48</span><span class="unit" id="dUnit">天</span></div>
+      <div class="heroMeta">
+        <div class="l1" id="heroL1">距 2026-12-19 初试</div>
+        <div class="l2" id="heroL2">11/1 – 12/18 · 共 48 个学习日</div>
+      </div>
+    </div>
+    <div class="dbar"><i id="dbarFill" style="width:0"></i></div>
+    <div class="dbarTxt"><span id="dbarLeft">已过 0 / 48</span><span id="dbarRight">套卷 0 / 38</span></div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-view="today">今日</button>
+    <button class="tab" data-view="papers">套卷</button>
+    <button class="tab" data-view="skills">技能</button>
+    <button class="tab" data-view="calendar">日历</button>
+    <button class="tab" data-view="review">复盘</button>
+  </nav>
+
+  <section class="view on" id="view-today"></section>
+  <section class="view" id="view-papers"></section>
+  <section class="view" id="view-skills"></section>
+  <section class="view" id="view-calendar"></section>
+  <section class="view" id="view-review"></section>
+</div>
+
+<nav class="bottom" id="bottomNav">
+  <button class="on" data-view="today"><span class="ic">◉</span>今日</button>
+  <button data-view="papers"><span class="ic">▤</span>套卷</button>
+  <button data-view="skills"><span class="ic">⌘</span>技能</button>
+  <button data-view="calendar"><span class="ic">▦</span>日历</button>
+  <button data-view="review"><span class="ic">✎</span>复盘</button>
+</nav>
+
+<div class="mask" id="mask"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* 页面级错误兜底：万一某天渲染出错，至少让你看到原因，而不是白屏 */
+window.addEventListener('error', function (e) {
+  try {
+    var b = document.getElementById('errBar');
+    if (!b) {
+      b = document.createElement('div');
+      b.id = 'errBar';
+      b.style.cssText = 'position:fixed;left:0;right:0;bottom:76px;z-index:99;background:#fef2f2;color:#b91c1c;font:12px/1.5 monospace;padding:8px 12px;border-top:1px solid #fecaca;max-height:30vh;overflow:auto;white-space:pre-wrap';
+      document.body.appendChild(b);
+    }
+    b.textContent += '⚠ ' + e.message + ' @' + (e.filename || '') + ':' + e.lineno + '\n';
+  } catch (x) {}
+});
+</script>
+<script>
+/* =========================================================
+   48 天冲刺 · 单文件进度板
+   数据只存在本机 localStorage，可导出 JSON 手动备份/换机
+   ========================================================= */
+(function () {
+'use strict';
+
+/* ---------- 基础常量 ---------- */
+const DEFAULT_EXAM = '2026-12-19';
+const DEFAULT_START = '2026-11-01';
+const DEFAULT_END = '2026-12-18';
+const WD = ['日', '一', '二', '三', '四', '五', '六'];
+const KEY = 'kaoyan48.v1';
+
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const pad = n => String(n).padStart(2, '0');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function ymd(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+function parse(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function addDays(s, n) { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); }
+function diffDays(a, b) { return Math.round((parse(b) - parse(a)) / 864e5); }
+function md(s) { const d = parse(s); return `${d.getMonth() + 1}/${d.getDate()}`; }
+function wd(s) { return WD[parse(s).getDay()]; }
+function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+/* 日期可在设置里改；未改时用默认 11/1–12/18 / 12/19 */
+function readStored() {
+  try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+}
+const STORED = readStored() || {};
+const START = (STORED.settings && STORED.settings.start) || DEFAULT_START;
+const END = (STORED.settings && STORED.settings.end) || DEFAULT_END;
+const EXAM = (STORED.settings && STORED.settings.exam) || DEFAULT_EXAM;
+
+const DAYS = Array.from({ length: 48 }, (_, i) => addDays(START, i));
+const idxOf = s => DAYS.indexOf(s);
+const SUBJ = { math: '数学一', cs: '408', en: '英语一', rev: '复盘' };
+
+/* ---------- 48 天文案：每天聚焦什么 ---------- */
+const DAYMETA = [
+  /* 1  11/01 */ { f: [['math', 'exam']], note: '数学第一天：2011 卷，先摸底，别怕分数难看。' },
+  /* 2  11/02 */ { f: [['cs', 'exam']], note: '408 从 2009 卷起步，选填限时 60 分钟。' },
+  /* 3  11/03 */ { f: [['math', 'exam']], note: '概率薄弱点记进复盘，别停在“不会”。' },
+  /* 4  11/04 */ { f: [['cs', 'exam']], note: '计网还没强化：套卷里的网络题先标记，不深究。' },
+  /* 5  11/05 */ { f: [['math', 'exam']], note: '做完立刻对答案，错的当场分类。' },
+  /* 6  11/06 */ { f: [['cs', 'exam']], note: '数据结构大题先写思路，再补代码。' },
+  /* 7  11/07 */ { f: [['math', 'exam'], ['rev', 'weekly']], note: '第一周收尾：把 4 套数学错题按题型合并。' },
+  /* 8  11/08 */ { f: [['cs', 'exam'], ['rev', 'weekly']], note: '本周计网专题该收口了（应用层 → 传输层）。' },
+  /* 9  11/09 */ { f: [['math', 'exam']], note: '级数/多元积分开始按专题回炉。' },
+  /* 10 11/10 */ { f: [['cs', 'exam']], note: '408 选填错误率要压到 6 个以内。' },
+  /* 11 11/11 */ { f: [['math', 'exam']], note: '线代二次型是送分题，别丢。' },
+  /* 12 11/12 */ { f: [['cs', 'exam']], note: '操作系统的 PV、页面置换必须动手写。' },
+  /* 13 11/13 */ { f: [['math', 'exam']], note: '中值定理证明题：先背 3 个辅助函数构造。' },
+  /* 14 11/14 */ { f: [['cs', 'exam'], ['rev', 'weekly']], note: '两周节点：数学/408 各 7 套，进度落后就砍复盘不砍套卷。' },
+  /* 15 11/15 */ { f: [['math', 'exam']], note: '2018 卷起进入“近十年”，按考试时间做。' },
+  /* 16 11/16 */ { f: [['cs', 'exam']], note: '近十年 408 卷开始计时 180 分钟。' },
+  /* 17 11/17 */ { f: [['math', 'exam']], note: '错题当天不过夜：21:00 前必须重做一遍。' },
+  /* 18 11/18 */ { f: [['cs', 'exam']], note: '计网强化收尾，套卷里的网络题开始能自己讲清。' },
+  /* 19 11/19 */ { f: [['math', 'exam']], note: '概率大题成组练：分布 → 期望 → 估计。' },
+  /* 20 11/20 */ { f: [['cs', 'exam']], note: '408 真题第二遍只做错题和不确定题。' },
+  /* 21 11/21 */ { f: [['math', 'exam'], ['rev', 'weekly']], note: '第三周：数学应完成 11 套，408 完成 10 套。' },
+  /* 22 11/22 */ { f: [['cs', 'exam'], ['rev', 'weekly']], note: '英语阅读 2017 后进度别掉，两天一轮。' },
+  /* 23 11/23 */ { f: [['math', 'exam']], note: '模拟卷分数波动正常，盯“会做但做错”。' },
+  /* 24 11/24 */ { f: [['cs', 'exam']], note: '大题书写规范：步骤分比结果分重要。' },
+  /* 25 11/25 */ { f: [['math', 'exam']], note: '2023 卷开始，严格 8:30–11:30。' },
+  /* 26 11/26 */ { f: [['cs', 'exam']], note: '408 近五年卷至少留一套别提前做。' },
+  /* 27 11/27 */ { f: [['math', 'exam'], ['rev', 'weekly']], note: '第四周：把 2011–2017 的错题过第二遍。' },
+  /* 28 11/28 */ { f: [['cs', 'exam'], ['rev', 'weekly']], note: '408 错题按“知识点”而不是“年份”归档。' },
+  /* 29 11/29 */ { f: [['math', 'exam']], note: '2025 卷：按真实考试节奏，连草稿纸都模拟。' },
+  /* 30 11/30 */ { f: [['cs', 'exam']], note: '明天 2024 卷，后天开始二刷。' },
+  /* 31 12/01 */ { f: [['math', 'exam']], note: '数学真题最后一卷，必须完整 3 小时。' },
+  /* 32 12/02 */ { f: [['cs', 'exam']], note: '408 真题最后一卷，之后进入二刷+模考。' },
+  /* 33 12/03 */ { f: [['rev', 'mistake']], note: '二刷开日：只做错题，不碰新卷。' },
+  /* 34 12/04 */ { f: [['rev', 'mistake']], note: '二刷：数学错题按“计算/概念/方法”三类分。' },
+  /* 35 12/05 */ { f: [['math', 'mistake'], ['cs', 'weak']], note: '数学错题二刷收尾；408 弱项专题补漏。' },
+  /* 36 12/06 */ { f: [['cs', 'mistake'], ['math', 'weak']], note: '408 错题二刷收尾；数学公式默写。' },
+  /* 37 12/07 */ { f: [['rev', 'mistake']], note: '最后一天缓冲：把没消化的错题标“放弃”，不内耗。' },
+  /* 38 12/08 */ { f: [['math', 'mock']], note: '全真模拟①：8:30 准时开考，手机放远。' },
+  /* 39 12/09 */ { f: [['cs', 'mock']], note: '408 全真模拟①：14:00–17:00。' },
+  /* 40 12/10 */ { f: [['math', 'mistake'], ['cs', 'mistake']], note: '模拟复盘：丢分点写进“考前 3 页纸”。' },
+  /* 41 12/11 */ { f: [['cs', 'weak'], ['math', 'weak']], note: '专题回炉：只挑最不稳的 2 个。' },
+  /* 42 12/12 */ { f: [['math', 'mock']], note: '全真模拟②：目标 110+。' },
+  /* 43 12/13 */ { f: [['cs', 'mock']], note: '408 全真模拟②：目标 100+。' },
+  /* 44 12/14 */ { f: [['rev', 'mistake']], note: '三刷：只看高频错题和框架。' },
+  /* 45 12/15 */ { f: [['math', 'weak'], ['cs', 'weak']], note: '公式/结论默写 + 计网协议表默写。' },
+  /* 46 12/16 */ { f: [['rev', 'template']], note: '大作文模板定稿，小作文 5 类框架过一遍。' },
+  /* 47 12/17 */ { f: [['rev', 'rest']], note: '考前调整：轻量背框架，23:00 前睡。' },
+  /* 48 12/18 */ { f: [['rev', 'rest']], note: '考场踩点/证件文具；18:00 后不再看新东西。' },
+];
+
+/* ---------- 套卷数据（数学 16 + 408 18 + 4 场模拟） ---------- */
+const MATH_YEARS = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+const CS_YEARS = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
+const EXAMS = [];
+mathDays().forEach((d, i) => EXAMS.push({ id: 'm' + MATH_YEARS[i], subject: 'math', year: MATH_YEARS[i], kind: 'real', date: d, title: MATH_YEARS[i] + ' 数一真题' }));
+csDays().forEach((d, i) => EXAMS.push({ id: 'c' + CS_YEARS[i], subject: 'cs', year: CS_YEARS[i], kind: 'real', date: d, title: CS_YEARS[i] + ' 408 真题' }));
+/* 模拟考固定在第 38/39/42/43 天（与 DAYMETA 对齐） */
+EXAMS.push({ id: 'mm1', subject: 'math', kind: 'mock', date: DAYS[37], title: '数一全真模拟①' });
+EXAMS.push({ id: 'cm1', subject: 'cs', kind: 'mock', date: DAYS[38], title: '408 全真模拟①' });
+EXAMS.push({ id: 'mm2', subject: 'math', kind: 'mock', date: DAYS[41], title: '数一全真模拟②' });
+EXAMS.push({ id: 'cm2', subject: 'cs', kind: 'mock', date: DAYS[42], title: '408 全真模拟②' });
+
+function mathDays() {
+  // 第 1–31 个奇数日中的前 16 个（默认 11/1–12/1），数学 16 套
+  return DAYS.filter((d, i) => i % 2 === 0 && i <= 30).slice(0, 16);
+}
+function csDays() {
+  // 第 2–32 个偶数日（默认 11/2–12/2）取前 16 个 + 12/4、12/6，408 共 18 套
+  const base = DAYS.filter((d, i) => i % 2 === 1 && i <= 31).slice(0, 16);
+  return base.concat([DAYS[33], DAYS[35]]);
+}
+
+/* ---------- 英语阅读清单（2017 Text1 起，共 40 篇） ---------- */
+const READINGS = [];
+for (let y = 2017; y <= 2026; y++) for (let t = 1; t <= 4; t++) READINGS.push({ id: `r${y}-${t}`, y, t, label: `${y} Text${t}` });
+const NEWTYPE = [];
+for (let y = 2017; y <= 2026; y++) NEWTYPE.push({ id: `n${y}`, y, label: `${y} 新题型` });
+/* 你目前做到 2017 Text2，前两篇视为已完成（可在技能页取消） */
+const PRESET_READ = { 'r2017-1': 1, 'r2017-2': 1 };
+
+/* ---------- 技能训练（数据结构代码题主题） ---------- */
+const DS_TOPICS = [
+  { id: 'linear', name: '线性表/链表', goal: 12 },
+  { id: 'stack', name: '栈·队列·串', goal: 8 },
+  { id: 'tree', name: '树与二叉树', goal: 14 },
+  { id: 'graph', name: '图（BFS/DFS/最短路/MST）', goal: 12 },
+  { id: 'sort', name: '排序与查找', goal: 10 },
+  { id: 'dp', name: '算法设计题（DP/贪心/分治）', goal: 10 },
+];
+
+/* ---------- 状态 ---------- */
+const DEFAULT = {
+  v: 1,
+  createdAt: Date.now(),
+  exams: {},      // id -> { done:true, date, score, review:true, reviewAt }
+  tasks: {},      // date -> { taskId: {done, at} }
+  notes: {},      // date -> string
+  wrong: {},      // date -> number
+  readings: {},   // id -> 1
+  newtypes: {},   // id -> 1
+  ds: {},         // topic -> count
+  custom: {},     // date -> {note, tasks:[{id,text}]}
+  days: {},       // date -> {blocks:[...], note:true}  ← 你自己改过的日程
+  hours: {},      // date -> 学习时长（旧字段，保留兼容）
+  settings: null, // {exam,start,end}
+  mistakes: [],   // {id, date, subject, title, reason, fix, next, reviewed}
+  updatedAt: 0,
+};
+let S = load();
+let CUR = todayKey();          // 当前查看的日期
+let VIEW = 'today';
+
+function freshState() {
+  const o = JSON.parse(JSON.stringify(DEFAULT));
+  o.readings = Object.assign({}, PRESET_READ);
+  return o;
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return freshState();
+    const o = JSON.parse(raw);
+    return Object.assign(freshState(), o, {
+      exams: o.exams || {}, tasks: o.tasks || {}, notes: o.notes || {}, wrong: o.wrong || {},
+      readings: Object.assign({}, PRESET_READ, o.readings || {}), newtypes: o.newtypes || {},
+      ds: o.ds || {}, custom: o.custom || {}, hours: o.hours || {}, days: o.days || {}, mistakes: o.mistakes || [],
+    });  } catch (e) { return freshState(); }
+}
+function save() {
+  S.updatedAt = Date.now();
+  try { localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch (e) { toast('保存失败：浏览器禁用了本地存储'); }
+}
+
+function todayKey() {
+  const t = ymd(new Date());
+  if (t < START) return START;
+  if (t > END) return END;
+  return t;
+}
+
+/* ---------- 每日任务生成 ---------- */
+function phaseOf(date) {
+  const i = idxOf(date);
+  if (i < 0) return null;
+  if (i <= 4) return { n: 1, name: '开局筑基', color: '#2563eb' };
+  if (i <= 31) return { n: 2, name: '套卷主攻', color: '#d97706' };
+  if (i <= 36) return { n: 3, name: '二刷出清', color: '#7c3aed' };
+  return { n: 4, name: '模考冲刺', color: '#059669' };
+}
+
+function examOn(date) {
+  return EXAMS.filter(e => e.date === date);
+}
+function isMathDay(date) {
+  return EXAMS.some(e => e.date === date && e.subject === 'math');
+}
+
+function readingRound(date) {
+  const i = idxOf(date);
+  // 奇数日（i 偶）先新题型、偶数日（i 奇）做阅读，和“一天新题型、一天阅读”一致
+  return i % 2 === 0 ? 'newtype' : 'read';
+}
+
+function topicOf(date) {
+  const i = idxOf(date);
+  // 408 专题循环：计网 8 个 + 数据结构 5 个 + 操作系统 3 个
+  const LIST = [
+    '计网：体系结构 & 物理层（编码/调制/信道容量）',
+    '计网：数据链路层（CRC、CSMA/CD、以太网帧、交换机）',
+    '计网：网络层（IPv4 分组、子网划分、CIDR、路由聚合）',
+    '计网：传输层 TCP（三次握手、拥塞控制、快重传）',
+    '计网：传输层 UDP + 应用层（DNS/HTTP/邮件）',
+    '数据结构：树与二叉树（遍历、线索、哈夫曼）',
+    '数据结构：图（存储、遍历、最短路、MST）',
+    '操作系统：进程与 PV 操作',
+    '数据结构：排序算法比较',
+    '计网：综合题（路由表 + 子网 + TCP 计算）',
+    '操作系统：内存管理 & 页面置换',
+    '数据结构：查找（BST/AVL/B树/散列）',
+  ];
+  return LIST[i % LIST.length];
+}
+
+const TEMPLATES = [
+  { id: 'tpl1', text: '大作文模板 A（现象/观点类）' },
+  { id: 'tpl2', text: '大作文模板 B（正反论证类）' },
+  { id: 'tpl3', text: '大作文模板 C（建议/措施类）' },
+  { id: 'tpl4', text: '小作文模板 A（书信/建议信）' },
+  { id: 'tpl5', text: '小作文模板 B（通知/告示）' },
+];
+
+/* 408 卷日的上午（共 16 个）：前 6 个先补概率，其余轮高数/线代薄弱专题 */
+const MATH_TOPICS = [
+  { name: '概率：随机事件与一维随机变量（分布函数/密度）' },
+  { name: '概率：二维随机变量（联合/边缘/条件/独立性）' },
+  { name: '概率：数字特征（期望/方差/协方差/相关系数）' },
+  { name: '概率：大数定律与中心极限定理' },
+  { name: '概率：参数估计（矩估计/最大似然/区间估计）' },
+  { name: '概率：假设检验 + 概率大题成组练' },
+  { name: '高数：级数（判敛、幂级数展开、傅里叶）' },
+  { name: '高数：多元微分（偏导/极值/条件极值）' },
+  { name: '高数：二重积分与曲线曲面积分' },
+  { name: '高数：微分方程（一阶/高阶/应用）' },
+  { name: '高数：中值定理与不等式证明' },
+  { name: '高数：极限与一元微分（易错计算专项）' },
+  { name: '线代：特征值/二次型/相似对角化' },
+  { name: '线代：向量组与线性方程组' },
+  { name: '线代：矩阵与行列式（计算提速）' },
+  { name: '概率 + 线代混合错题回炉' },
+];
+function mathTopicOf(date) {
+  const csIdx = DAYS.filter((d, i) => i % 2 === 1 && i <= 31).indexOf(date);
+  const k = csIdx >= 0 ? csIdx : idxOf(date) % MATH_TOPICS.length;
+  return MATH_TOPICS[k % MATH_TOPICS.length];
+}
+
+function englishOf(date) {
+  const i = idxOf(date);
+  if (i <= 1) {
+    return {
+      mode: 'template',
+      label: i === 0 ? '大作文模板 A：背熟 + 默写 1 段（先中文后英文）' : '大作文模板 B：背熟 + 换 3 个话题词改写',
+      tid: 'tpl' + ((i % 3) + 1),
+    };
+  }
+  const round = readingRound(date);
+  if (round === 'read') {
+    const done = READINGS.filter(r => S.readings[r.id]).length;
+    const start = clamp(done, 0, READINGS.length - 2);
+    const two = READINGS.slice(start, start + 2);
+    const essayNo = 2 + Math.floor(i / 4) % 5;
+    return {
+      mode: 'read', taskId: 'en-rd' + i,
+      label: '阅读精读 2 篇：' + two.map(x => x.label).join(' + ') + '（逐句口译 + 错题定位）',
+      ids: two.map(x => x.id),
+      extra: '小作文模板 #' + (essayNo % 5 + 1) + '：套写 1 篇（10 分钟限时）',
+    };
+  }
+  const ndone = NEWTYPE.filter(n => S.newtypes[n.id]).length;
+  const nx = NEWTYPE[clamp(ndone, 0, NEWTYPE.length - 1)];
+  return {
+    mode: 'newtype', taskId: 'en-nt' + i,
+    label: '新题型 1 篇：' + nx.label + '（先看选项再定位）',
+    nid: nx.id,
+    extra: '翻译 1 句（真题长难句，先翻再对答案）',
+  };
+}
+
+/* 默认日程（照下面这套；你想改就点“改日程”，改动只影响那一天） */
+function defaultBlocks(date, withCustom) {
+  const i = idxOf(date);
+  if (i < 0) return [];
+  const meta = DAYMETA[i] || { f: [] };
+  const custom = (S.custom && S.custom[date]) || {};
+  const customTasks = Array.isArray(custom.tasks) ? custom.tasks : [];
+  const exams = examOn(date);
+  const mathExam = exams.find(e => e.subject === 'math');
+  const csExam = exams.find(e => e.subject === 'cs');
+  const isMock = exams.some(e => e.kind === 'mock');
+  const phase = phaseOf(date);
+  const mathDay = !!mathExam;
+
+  const B = [];
+  const add = (id, from, to, name, sub, tasks, tag, mod) => B.push({ id, from, to, name, sub, tasks, tag, mod });
+  const T = (id, text, extra) => Object.assign({ id, text }, extra || {});
+
+  /* 考前最后两天：只做轻量回顾，不加新任务 */
+  if (i >= 46) {
+    add('b1', '6:30', '7:30', '晨读 · 轻声过一遍', '不背新词，只翻旧词',
+      [T('v1', '高频词错词本过一遍（30 分钟）'), T('v2', '大作文模板 A 默写 1 段')], 'en', 'en');
+    add('b2', '7:30', '8:30', '早餐 + 准考证/文具', '把东西装进包里就别再想',
+      [T('meal1', '早餐 + 检查：身份证、准考证、笔、橡皮、直尺、手表')], 'rev');
+    add('b3', '8:30', '11:30', i === 47 ? '考场踩点 / 交通确认' : '错题本最终回看', '只看不写',
+      [T('r1', i === 47 ? '确认考点路线、考场楼栋、午饭地点' : '高频错题（做过 3 遍还错的）过一遍'),
+       T('r2', '数学公式默写 1 页（不熟的标出来）')], 'math', 'math');
+    add('b4', '11:30', '12:30', '午餐 + 午休', '正常吃，别睡太久',
+      [T('meal2', '午餐 + 午休 40 分钟')], 'rev');
+    add('b5', '12:30', '15:00', '英语 · 只看模板', '不碰新题',
+      [T('en1', '大作文 3 套模板 + 小作文 5 类框架各读 1 遍'),
+       T('en2', '把自己写过的作文拿出来看 2 篇')], 'en', 'en');
+    add('b6', '15:00', '17:00', '408 框架速览', '只看目录级',
+      [T('c1', '计网协议表 + OS 调度/内存 + 数据结构复杂度表')], 'cs', 'cs');
+    add('b7', '17:00', '18:00', '晚餐 + 散步', '离开书桌',
+      [T('meal3', '晚餐 + 走 15 分钟')], 'rev');
+    add('b8', '18:00', '20:30', '最后一遍：只看错题', '看完就合书',
+      [T('n1', '错题本 / 考前 3 页纸 过最后一遍，20:30 合书')], 'rev', 'rev');
+    add('b9', '19:30', '21:30', '放松 + 早睡', '23:00 前必须睡',
+      [T('rest1', '不刷短视频，可听音乐/散步/和家人聊两句'), T('rest2', '23:00 前上床')], 'rev');
+    return B;
+  }
+
+  /* 1 单词背诵 */
+  add('b1', '6:00', '7:00', '单词背诵', '1100 高频词第 ' + (i + 1) + ' 遍 · 遮中文回忆',
+    [T('v1', '单词 1：Unit 1–3 高频词（50 分钟，新词 30 + 复习 20）'),
+     T('v2', '生词本：把今天卡住的 10 个抄到小本，睡前再过一遍')], 'en', 'en');
+
+  /* 2 公式背诵 */
+  add('b2', '7:30', '8:00', '公式背诵', '数学/408 公式轮着来',
+    [T('f1', '数学公式：' + (i % 2 === 0 ? '高数（极限/中值/积分）' : '线代 + 概率') + ' 1 页默写'),
+     T('f2', '408 公式：' + (i % 2 === 0 ? '计网（编码/子网/TCP 窗口）' : 'OS（调度/地址转换）') + ' 速记')], 'math', 'math');
+
+  /* 3 早餐 */
+  add('b3', '8:00', '8:30', '早餐', '吃完直接进数学，不刷手机',
+    [T('meal1', '早餐 30 分钟（脑子里过一遍昨天错题）')], 'rev');
+
+  /* 4 数学套卷 / 复盘 */
+  if (mathExam) {
+    add('b4', '8:30', '11:30', '数学套卷 / 复盘', mathExam.title + ' · 计时 3 小时',
+      [T(mathExam.id, '套卷：' + mathExam.title + '（8:30 准时开考，11:30 停笔）', { ex: mathExam.id }),
+       T('m-rev', '停笔后立刻对答案 + 标三类：会做错 / 不会 / 算错')], 'math', 'math');
+  } else {
+    add('b4', '8:30', '11:30', '数学套卷 / 复盘', '408 卷日：上午补数学薄弱专题',
+      [T('m2', '昨日数学错题重做（先不看答案，40 分钟）'),
+       T('m3', '专题突破：' + mathTopicOf(date).name + '（70 分钟）'),
+       T('m4', '公式默写：当天专题公式 1 页')], 'math', 'math');
+  }
+
+  /* 5 午餐 */
+  add('b5', '11:30', '12:00', '午餐', '30 分钟，别刷视频',
+    [T('meal2', '午餐 30 分钟')], 'rev');
+
+  /* 6 单词 / 复习代码 */
+  add('b6', '12:00', '12:30', '单词 / 复习代码', '低强度，防困',
+    [T('v3', '单词 2：昨天 + 今天错词 20 分钟'),
+     T('d0', '代码：昨天写的那道题手写复现一遍（10 分钟）')], 'en', 'en');
+
+  /* 7 午休 */
+  add('b7', '12:30', '13:00', '午休', '30 分钟，闭眼也算',
+    [T('meal3', '午休 30 分钟（不睡就闭眼躺，别刷手机）')], 'rev');
+
+  /* 8 单词 / 作文模板 */
+  add('b8', '13:00', '14:00', '单词 / 作文模板', '下午第一段，先动笔再动脑',
+    [T('v4', '单词 3：新词 20 + 复习 10（30 分钟）'),
+     T('e1', '作文模板：大作文 1 段默写 + 换 3 个话题词改写（30 分钟）')], 'en', 'en');
+
+  /* 9 新题型 / 阅读 */
+  const en = englishOf(date);
+  add('b9', '14:00', '15:00', '新题型 / 阅读', en.mode === 'read' ? '阅读 2 篇（14:00–15:00）' : en.mode === 'newtype' ? '新题型 1 篇 + 翻译' : '作文模板',
+    [T(en.taskId || 'en1', en.label, en.ids ? { rids: en.ids } : (en.nid ? { nid: en.nid } : {})),
+     T('en2', '生词/长难句摘 3 条')], 'en', 'en');
+
+  /* 10 休息 */
+  add('b10', '15:00', '16:00', '休息', '这一小时是给晚上续航的',
+    [T('rest1', '休息 60 分钟：可以躺着，但别刷短视频（设闹钟）')], 'rev');
+
+  /* 11 数学查缺补漏 */
+  add('b11', '16:00', '18:00', '数学查缺补漏', i < 32 ? mathTopicOf(date).name : '错题二刷',
+    [T('m5', i < 32 ? '专题：' + mathTopicOf(date).name + '（90 分钟）' : '二刷：数学错题按“计算 / 概念 / 方法”重做（90 分钟）'),
+     T('m6', '查缺：把 2 道一直不会的题写成“解题模板”')], 'math', 'math');
+
+  /* 12 晚餐 */
+  add('b12', '18:00', '18:30', '晚餐', '30 分钟',
+    [T('meal4', '晚餐 30 分钟')], 'rev');
+
+  /* 13 408 强化复盘 */
+  add('b13', '18:30', '19:30', '408 强化 / 复盘', '计网 + 数据结构 + OS',
+    [T('c1', '计网强化：' + topicOf(date) + '（40 分钟）'),
+     T('c2', '408 昨日错题重做 20 题（20 分钟）')], 'cs', 'cs');
+
+  /* 14 408 复盘 */
+  if (csExam) {
+    add('b14', '19:30', '22:30', '408 套卷 / 复盘', csExam.title,
+      [T(csExam.id, '套卷：' + csExam.title + '（19:30 开考，22:00 停笔）', { ex: csExam.id }),
+       T('c-rev', '22:00–22:30 对答案 + 错题按知识点归档')], 'cs', 'cs');
+  } else {
+    add('b14', '19:30', '22:30', '408 复盘', '当天错题 + 大题书写',
+      [T('c3', '408 错题复盘：按知识点归档，不按年份（60 分钟）'),
+       T('c4', '大题默写：数据结构代码 / OS PV / 计网计算 各 1 道（60 分钟）')], 'cs', 'cs');
+  }
+
+  /* 15 休息 */
+  add('b15', '22:30', '23:00', '休息', '洗漱 + 走动',
+    [T('rest2', '洗漱、走动 30 分钟，离开书桌')], 'rev');
+
+  /* 16 错题 */
+  add('b16', '23:00', '24:00', '408 / 数学错题', '睡前最后一小时，只做错题',
+    [T('n1', '408 错题 30 分钟（当天标记的）'),
+     T('n2', '数学错题 30 分钟（盖住答案重做）'),
+     T('n3', '睡前 5 分钟：默背今天最卡的 1 个公式')], 'rev', 'rev');
+
+  /* 自定义（你手动加的） */
+  if (withCustom !== false && customTasks.length) {
+    B.push({
+      id: 'bx', from: '自定义', to: '', name: '自定义任务', sub: '你自己加的，可随时删',
+      tasks: customTasks.map(t => Object.assign({ id: 'x-' + t.id, text: t.text, custom: t.id })),
+      tag: 'rev', mod: 'rev',
+    });
+  }
+
+  return B;
+}
+
+/* ---------- 日程合并：有自定义就用自定义，否则用默认 ---------- */
+function buildBlocks(date) {
+  const ov = S.days && S.days[date];
+  if (ov && ov.note) {
+    const custom = (S.custom && S.custom[date]) || {};
+    const ct = Array.isArray(custom.tasks) ? custom.tasks : [];
+    const blocks = (ov.blocks || []).map(b => ({
+      id: b.id, from: b.from, to: b.to, name: b.name, sub: b.sub, tag: b.tag, mod: b.mod,
+      tasks: (b.tasks || []).map(t => Object.assign({}, t)),
+    }));
+    if (ct.length) {
+      blocks.push({
+        id: 'bx', from: '自定义', to: '', name: '自定义任务', sub: '你自己加的，可随时删',
+        tasks: ct.map(t => ({ id: 'x-' + t.id, text: t.text, custom: t.id })), tag: 'rev', mod: 'rev',
+      });
+    }
+    return blocks;
+  }
+  return defaultBlocks(date, true);
+}
+
+/* ---------- 时间计算 ---------- */
+function toMin(hm) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(String(hm || '').trim());
+  if (!m) return null;
+  return Number(m[1]) * 60 + Number(m[2]);
+}
+function blockMin(b) {
+  const a = toMin(b.from), z = toMin(b.to);
+  if (a === null || z === null || z <= a) return 0;
+  return z - a;
+}
+const MEAL_IDS = ['b3', 'b5', 'b7', 'b10', 'b12', 'b15'];
+function isMealBlock(b) {
+  return MEAL_IDS.indexOf(b.id) >= 0 || /早餐|午餐|晚餐|午休|休息|放松|散步|洗漱/.test(b.name);
+}
+/* 科目模块 */
+const MODS = [
+  { id: 'math', name: '数学一', color: '#2563eb' },
+  { id: 'en', name: '英语一', color: '#059669' },
+  { id: 'cs', name: '408', color: '#d97706' },
+  { id: 'rev', name: '错题复盘', color: '#7c3aed' },
+];
+function modOf(b) {
+  if (b.mod) return b.mod;
+  if (b.tag === 'math' || b.tag === 'cs' || b.tag === 'en') return b.tag;
+  return 'rev';
+}
+function modMinutes(date) {
+  const out = { math: 0, en: 0, cs: 0, rev: 0 };
+  (buildBlocks(date) || []).forEach(b => {
+    const n = blockMin(b);
+    if (n > 0) { const k = modOf(b); out[k] = (out[k] || 0) + n; }
+  });
+  return out;
+}
+function studyMinutes(date) {
+  return (buildBlocks(date) || []).reduce((n, b) => n + (isMealBlock(b) ? 0 : blockMin(b)), 0);
+}
+function timeSpan(date) {
+  const bs = buildBlocks(date) || [];
+  let a = null, z = null;
+  bs.forEach(b => {
+    const x = toMin(b.from), y = toMin(b.to);
+    if (x !== null && (a === null || x < a)) a = x;
+    if (y !== null && (z === null || y > z)) z = y;
+  });
+  if (a === null || z === null || z <= a) return '';
+  return fmtMin(z - a);
+}
+function fmtMin(n) {
+  if (!n || n <= 0) return '0′';
+  const h = Math.floor(n / 60), m = n % 60;
+  return (h ? h + ' 小时' : '') + (m ? (h ? ' ' : '') + m + ' 分' : (h ? '' : '0 分'));
+}
+function nowMin() {
+  const d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+}
+function inBlock(b, n) {
+  const a = toMin(b.from), z = toMin(b.to);
+  if (a === null || z === null) return false;
+  return n >= a && n < z;
+}
+
+/* ---------- 计算 ---------- */
+/* 任务 id 只在“当天”内唯一，存库时按 日期|任务id 做 key，避免跨天串状态 */
+function tkey(date, tid) { return date + '|' + tid; }
+function taskState(date, tid) { const d = S.tasks[tkey(date, tid)]; return !!(d && d.done); }
+function toggleTask(date, tid, blockTasks) {
+  const k = tkey(date, tid);
+  const cur = taskState(date, tid);
+  S.tasks[k] = { done: !cur, at: Date.now() };
+  const t = blockTasks.find(x => x.id === tid);
+  if (t && t.ex) {
+    S.exams[t.ex] = Object.assign({}, S.exams[t.ex], { done: !cur, date: !cur ? date : null });
+  }
+  if (t && t.rids) t.rids.forEach(id => { if (!cur) S.readings[id] = 1; else delete S.readings[id]; });
+  if (t && t.nid) { if (!cur) S.newtypes[t.nid] = 1; else delete S.newtypes[t.nid]; }
+  save();
+  render();
+}
+
+function dayProgress(date) {
+  const blocks = buildBlocks(date);
+  let total = 0, done = 0;
+  blocks.forEach(b => b.tasks.forEach(t => { total++; if (taskState(date, t.id)) done++; }));
+  return { total, done, pct: total ? Math.round(done / total * 100) : 0, blocks };
+}
+
+function overall() {
+  const total = EXAMS.length;
+  const done = EXAMS.filter(e => S.exams[e.id] && S.exams[e.id].done).length;
+  const m = EXAMS.filter(e => e.subject === 'math');
+  const c = EXAMS.filter(e => e.subject === 'cs');
+  return {
+    total, done, pct: Math.round(done / total * 100),
+    math: { done: m.filter(e => S.exams[e.id] && S.exams[e.id].done).length, total: m.length },
+    cs: { done: c.filter(e => S.exams[e.id] && S.exams[e.id].done).length, total: c.length },
+  };
+}
+
+function streak() {
+  // 从今天往前数连续“有完成项”的天数；今天还没开始则从昨天算
+  let end = idxOf(todayKey());
+  if (end < 0) return 0;
+  const td = DAYS[end];
+  if (dayProgress(td).done === 0) end -= 1;
+  let n = 0;
+  for (let i = end; i >= 0; i--) {
+    if (dayProgress(DAYS[i]).done === 0) break;
+    n++;
+  }
+  return n;
+}
+
+/* ---------- 日程编辑 ---------- */
+let ED = null;   // { date, blocks:[...], openId, isNew }
+
+function openDayEditor(date, focusId) {
+  const base = defaultBlocks(date, true);
+  const ov = S.days && S.days[date];
+  const src = (ov && ov.note && Array.isArray(ov.blocks)) ? ov.blocks : base;
+  ED = {
+    date: date,
+    isNew: !(ov && ov.note),
+    openId: focusId || null,
+    blocks: src.map(b => ({
+      id: b.id, tag: b.tag || '', mod: b.mod || modOf(b),
+      from: b.from || '', to: b.to || '',
+      name: b.name || '', sub: b.sub || '',
+      tasks: (b.tasks || []).map(t => Object.assign({}, t)),
+    })),
+  };
+  drawDayEditor();
+}
+
+function cascEnabled() { return !S.settings || S.settings.cascade !== false; }
+function hhmmOf(m) {
+  m = clamp(Math.round(m), 0, 1440);
+  if (m === 1440) return '24:00';
+  return String(Math.floor(m / 60)).padStart(2, '0') + ':' + pad(m % 60);
+}
+/* 把第 bi 块之后的块整体顺延，保持各自原有时长（开关关掉时不生效） */
+function applyCascade(bi) {
+  if (!cascEnabled()) return;
+  const cur = ED.blocks[bi];
+  if (!cur) return;
+  const a = toMin(cur.from), z = toMin(cur.to);
+  if (a === null || z === null || z < a) return;
+  if (toMin(cur.to) === 1440) cur.to = '24:00';
+  let end = z;
+  for (let j = bi + 1; j < ED.blocks.length; j++) {
+    const b = ED.blocks[j];
+    const dur = blockMin(b) || 30;
+    b.from = hhmmOf(end);
+    b.to = hhmmOf(end + dur);
+    end = end + dur;
+  }
+  syncEditorTimes();
+}
+/* 顺延后回填输入框，避免整体重绘导致失焦 */
+function syncEditorTimes() {
+  $$('#sheet .ed').forEach(el => {
+    const bi = Number(el.dataset.b), f = el.dataset.f;
+    if (f !== 'from' && f !== 'to') return;
+    if (!ED.blocks[bi]) return;
+    const val = ED.blocks[bi][f];
+    if (el.value !== val) el.value = val;
+  });
+  $$('#sheet .eb').forEach((el, bi) => {
+    const b = ED.blocks[bi];
+    if (!b) return;
+    const t = el.querySelector('.etime');
+    if (t) t.textContent = b.from + '–' + b.to;
+    const m = el.querySelector('.emins');
+    if (m) m.textContent = blockMin(b) ? fmtMin(blockMin(b)) : '—';
+  });
+}
+
+function drawDayEditor() {
+  const date = ED.date;
+  const rows = ED.blocks.map((b, bi) => {
+    const open = ED.openId === b.id;
+    const mins = blockMin(b);
+    return `<div class="eb ${open ? 'open' : ''}" data-eb="${bi}">
+      <div class="ehead" data-eopen="${bi}">
+        <span class="etime">${esc(b.from)}–${esc(b.to)}</span>
+        <span class="ename">${esc(b.name || '（未命名）')}</span>
+        <span class="emins">${mins ? fmtMin(mins) : '—'}</span>
+        <span class="caret">▶</span>
+      </div>
+      <div class="ebody">
+        <div style="margin-bottom:8px"><label>这块算哪个科目（首页统计用）</label>
+          <select class="inp ed" data-f="mod" data-b="${bi}">
+            ${MODS.map(m => `<option value="${m.id}" ${b.mod === m.id ? 'selected' : ''}>${m.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="row2" style="margin-bottom:8px">
+          <div><label>开始</label><input class="inp ed" type="time" data-f="from" data-b="${bi}" value="${esc(b.from)}"></div>
+          <div><label>结束</label><input class="inp ed" type="time" data-f="to" data-b="${bi}" value="${esc(b.to)}"></div>
+        </div>
+        <div style="margin-bottom:8px"><label>标题</label><input class="inp ed" data-f="name" data-b="${bi}" value="${esc(b.name)}" placeholder="如 数学套卷"></div>
+        <div style="margin-bottom:8px"><label>小标题（可空）</label><input class="inp ed" data-f="sub" data-b="${bi}" value="${esc(b.sub)}" placeholder="如 2011 数一真题"></div>
+        <label>这一块要做的事</label>
+        ${b.tasks.map((t, ti) => `<div class="trow">
+          <input class="inp ed" data-f="task" data-b="${bi}" data-t="${ti}" value="${esc(t.text)}">
+          <button class="mini" data-deltask="${bi}:${ti}" style="color:#dc2626">删</button>
+        </div>`).join('')}
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="mini" data-addtask="${bi}">+ 加一条任务</button>
+          <button class="mini" data-moveb="${bi}:-1" ${bi === 0 ? 'disabled' : ''}>↑ 上移</button>
+          <button class="mini" data-moveb="${bi}:1" ${bi === ED.blocks.length - 1 ? 'disabled' : ''}>↓ 下移</button>
+          <button class="mini" data-shift="${bi}" title="这一块整体前后挪 15 分钟">±15 分钟</button>
+          <button class="mini" data-delb="${bi}" style="color:#dc2626">删掉这一块</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  openSheet(`
+    <h3>改 ${md(date)} 周日${wd(date)} 的日程</h3>
+    <div class="hint">时间、标题、任务都能改，只影响这一天。改完点最下面的保存。</div>
+    <div class="ebar">
+      <button class="mini" id="edAddBlock">+ 加一个时间块</button>
+      <button class="mini" id="edReset" style="color:#b45309">恢复成默认日程</button>
+    </div>
+    ${rows || '<div class="empty">这一天还没有时间块，点上面“加一个时间块”。</div>'}
+    <div class="casc">
+      <label><input type="checkbox" id="cascOn" ${cascEnabled() ? 'checked' : ''}> 改时间时，后面各块自动顺延</label>
+      <div class="small muted">改“开始/结束”会保持后面每块的时长不变，把后续块整体往前/后挪；关掉就只改当前这一块。</div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" id="edSave">保存这天的日程</button>
+      <button class="btn ghost" id="edClear">改回默认（不保存）</button>
+      <button class="btn ghost" id="edApplyAll">套用到后面所有天</button>
+    </div>
+    <div class="note" style="margin-top:10px">“套用到后面所有天”= 把今天这套时间结构复制给今天及以后、且<strong>你还没单独改过</strong>的日子。想单独微调哪天，再点那天的“改这天的日程”。</div>
+  `);
+
+  $$('#sheet .ed').forEach(el => {
+    el.addEventListener('input', () => {
+      const bi = Number(el.dataset.b), f = el.dataset.f;
+      if (!ED.blocks[bi]) return;
+      if (f === 'task') { ED.blocks[bi].tasks[Number(el.dataset.t)].text = el.value; return; }
+      ED.blocks[bi][f] = el.value;
+      if ((f === 'from' || f === 'to') && cascEnabled()) applyCascade(bi);
+    });
+  });
+  const co = $('#cascOn');
+  if (co) co.addEventListener('change', () => { S.cascade = !!co.checked; save(); });
+  $$('#sheet [data-eopen]').forEach(el => el.addEventListener('click', () => {
+    const bi = Number(el.dataset.eopen);
+    const id = ED.blocks[bi].id;
+    ED.openId = ED.openId === id ? null : id;
+    drawDayEditor();
+  }));
+  $$('#sheet [data-addtask]').forEach(el => el.addEventListener('click', () => {
+    const bi = Number(el.dataset.addtask);
+    ED.blocks[bi].tasks.push({ id: 't' + Date.now().toString(36) + bi, text: '' });
+    ED.openId = ED.blocks[bi].id;
+    drawDayEditor();
+  }));
+  $$('#sheet [data-deltask]').forEach(el => el.addEventListener('click', () => {
+    const [bi, ti] = el.dataset.deltask.split(':').map(Number);
+    ED.blocks[bi].tasks.splice(ti, 1);
+    ED.openId = ED.blocks[bi].id;
+    drawDayEditor();
+  }));
+  $$('#sheet [data-moveb]').forEach(el => el.addEventListener('click', () => {
+    const [bi, dir] = el.dataset.moveb.split(':').map(Number);
+    const j = bi + dir;
+    if (j < 0 || j >= ED.blocks.length) return;
+    const t = ED.blocks[bi]; ED.blocks[bi] = ED.blocks[j]; ED.blocks[j] = t;
+    ED.openId = ED.blocks[j].id;
+    drawDayEditor();
+  }));
+  $$('#sheet [data-shift]').forEach(el => el.addEventListener('click', () => {
+    const bi = Number(el.dataset.shift);
+    const b = ED.blocks[bi];
+    if (!b) return;
+    const a = toMin(b.from), z = toMin(b.to);
+    if (a === null || z === null) return;
+    if (a + 15 < 0 || z + 15 > 1440) { toast('已经到头了'); return; }
+    b.from = hhmmOf(a + 15);
+    b.to = hhmmOf(z + 15);
+    if (cascEnabled()) applyCascade(bi);
+    else syncEditorTimes();
+  }));
+  $$('#sheet [data-delb]').forEach(el => el.addEventListener('click', () => {
+    const bi = Number(el.dataset.delb);
+    if (!confirm('删掉“' + (ED.blocks[bi].name || '这一块') + '”？')) return;
+    ED.blocks.splice(bi, 1);
+    ED.openId = null;
+    drawDayEditor();
+  }));
+  $('#edAddBlock').addEventListener('click', () => {
+    const last = ED.blocks[ED.blocks.length - 1];
+    const from = last && toMin(last.to) !== null ? last.to : '22:20';
+    const endM = clamp((toMin(from) || 0) + 60, 0, 1439);
+    const id = 'nb' + Date.now().toString(36);
+    ED.blocks.push({
+      id, from, to: String(Math.floor(endM / 60)).padStart(2, '0') + ':' + pad(endM % 60),
+      name: '新时间块', sub: '', tag: 'rev',
+      tasks: [{ id: id + '-t1', text: '' }],
+    });
+    ED.openId = id;
+    drawDayEditor();
+  });
+  $('#edReset').addEventListener('click', () => {
+    if (!confirm('恢复成默认日程？你在这天的改动会丢。')) return;
+    ED.blocks = defaultBlocks(date, false).map(b => ({
+      id: b.id, tag: b.tag || '', from: b.from, to: b.to, name: b.name, sub: b.sub || '',
+      tasks: (b.tasks || []).map(t => Object.assign({}, t)),
+    }));
+    ED.openId = null;
+    drawDayEditor();
+  });
+  $('#edClear').addEventListener('click', () => {
+    if (S.days[date]) { delete S.days[date]; save(); }
+    closeSheet(); render(); toast('已改回默认');
+  });
+  $('#edSave').addEventListener('click', () => saveDayEditor(false));
+  $('#edApplyAll').addEventListener('click', () => saveDayEditor(true));
+}
+
+function saveDayEditor(applyAll) {
+  const date = ED.date;
+  const clean = [];
+  ED.blocks.forEach(b => {
+    const a = toMin(b.from), z = toMin(b.to);
+    if (a === null || z === null || z <= a) return;
+    const tasks = (b.tasks || []).filter(t => String(t.text || '').trim()).map((t, k) => ({
+      id: t.id || ('t' + Date.now().toString(36) + k),
+      text: String(t.text).trim(),
+      ex: t.ex, rids: t.rids, nid: t.nid, custom: t.custom,
+    }));
+    clean.push({
+      id: b.id, tag: b.tag || 'rev', mod: b.mod || modOf(b), from: b.from, to: b.to,
+      name: String(b.name || '未命名').trim() || '未命名',
+      sub: String(b.sub || '').trim(), tasks: tasks,
+    });
+  });
+  clean.sort((x, y) => (toMin(x.from) || 0) - (toMin(y.from) || 0));
+  if (!clean.length) { toast('至少留一个有效时间块（结束要晚于开始）'); return; }
+
+  if (applyAll) {
+    const all = DAYS.filter(d => d >= date);
+    const editedDays = all.filter(d => S.days[d] && S.days[d].note);
+    const freeDays = all.filter(d => !(S.days[d] && S.days[d].note));
+    let target = freeDays;
+    if (editedDays.length) {
+      const ok = confirm('有 ' + editedDays.length + ' 天你已经单独改过。\n\n确定 = 连这些天也一起覆盖（只换时间结构，任务按各自那天重新生成）\n取消 = 只套用到还没改过的 ' + freeDays.length + ' 天');
+      if (ok) target = all;
+    }
+    const dayNote = (S.custom[date] && S.custom[date].note) || '';
+    target.forEach(d => {
+      S.days[d] = {
+        note: true,
+        blocks: clean.map(b => ({
+          id: b.id, tag: b.tag, mod: b.mod, from: b.from, to: b.to, name: b.name, sub: b.sub,
+          tasks: applyTasksFor(d, b, d === date ? dayNote : ''),
+        })),
+      };
+    });
+    save(); closeSheet(); render();
+    toast('时间结构已套用到 ' + target.length + ' 天');
+    return;
+  }
+
+  const dayNote = (S.custom[date] && S.custom[date].note) || '';
+  S.days[date] = { note: true, blocks: clean.map(b => ({ id: b.id, tag: b.tag, mod: b.mod, from: b.from, to: b.to, name: b.name, sub: b.sub, tasks: applyTasksFor(date, b, dayNote) })) };
+  save(); closeSheet(); render();
+  toast('这天的日程已保存');
+}
+
+/* 保留时间骨架，任务按“那一天”重新生成；餐/休息/自定义沿用，你自己加的新任务保留 */
+function applyTasksFor(date, tplBlock, dayNote) {
+  const own = defaultBlocks(date, false);
+  // 优先按 id 找同块；找不到就按“科目 + 名字关键词”找最接近的那块
+  const mod = tplBlock.mod || 'rev';
+  let hit = own.find(b => b.id === tplBlock.id);
+  if (!hit) {
+    const pool = own.filter(b => (b.mod || 'rev') === mod && !isMealBlock(b));
+    hit = pool.find(b => b.name && tplBlock.name && (b.name.indexOf(tplBlock.name) >= 0 || tplBlock.name.indexOf(b.name) >= 0)) || pool[0];
+  }
+  const ownTasks = hit ? hit.tasks : [];
+  const tplTasks = tplBlock.tasks || [];
+  const merged = [], seen = {};
+  const push = t => { if (!seen[t.id]) { seen[t.id] = 1; merged.push(Object.assign({}, t)); } };
+  // 1) 那天自己的任务（套卷/阅读/专题……保证内容对得上）
+  if (ownTasks.length) ownTasks.forEach(push);
+  // 2) 餐/休息沿用模板里的（可能被你改过文案）
+  tplTasks.filter(t => /^(meal|rest)/.test(t.id)).forEach(push);
+  // 3) 你自己加的新任务
+  tplTasks.filter(t => /^t/.test(t.id)).forEach(push);
+  // 4) “今日内容”只留在被编辑的那一天
+  if (dayNote) push({ id: 'x-note', text: '今日内容：' + dayNote });
+  // 5) 那天没有对应内容时，保留模板任务，至少不丢
+  if (!merged.length) return tplTasks.map(t => Object.assign({}, t));
+  return merged;
+}
+
+/* ---------- 渲染：今日 ---------- */
+function renderToday() {
+  const date = CUR;
+  const i = idxOf(date);
+  const meta = DAYMETA[i] || { f: [] };
+  const ph = phaseOf(date);
+  const dayNum = i + 1;
+  const p = dayProgress(date);
+  const exams = examOn(date);
+  const ov = overall();
+  const now = new Date();
+  const isToday = date === ymd(now);
+
+  const focusHtml = exams.length
+    ? exams.map(e => `
+      <div class="focus ${e.subject === 'math' ? 'math' : 'cs'}">
+        <div class="k">${e.kind === 'mock' ? '全真模拟' : '今日套卷'} · ${SUBJ[e.subject]}</div>
+        <div class="t">${esc(e.title)}</div>
+        <div class="s">${e.subject === 'math' ? '8:30 开考 · 11:30 停笔' : '19:30 开考 · 22:00 停笔'} · 做完立刻对答案</div>
+        <button class="go" data-jump="${e.id}">${(S.exams[e.id] && S.exams[e.id].done) ? '已完成 ✓' : '去打卡'}</button>
+      </div>`).join('')
+    : `<div class="focus rev">
+        <div class="k">缓冲 / 复盘日 · 第 ${dayNum} 天</div>
+        <div class="t">${ph.name}</div>
+        <div class="s">今天不碰新卷：错题重做 + 模板/公式</div>
+      </div>`;
+
+  const blocksHtml = p.blocks.map(b => {
+    const doneCount = b.tasks.filter(t => taskState(date, t.id)).length;
+    const allDone = b.tasks.length > 0 && doneCount === b.tasks.length;
+    const isNow = isToday && inBlock(b, nowMin());
+    const open = isNow || (!allDone && doneCount > 0);
+    return `<div class="block ${allDone ? 'done' : ''} ${isNow ? 'now' : ''} ${open ? 'open' : ''}" data-block="${b.id}">
+      <header data-toggle="${b.id}">
+        <span class="time">${b.from}–${b.to || ''}</span>
+        <span class="name">${esc(b.name)}</span>
+        <span class="dur">${doneCount}/${b.tasks.length}</span>
+        <button class="mini" data-editb="${b.id}" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        ${b.sub ? `<div class="small muted" style="padding:2px 0 6px">${esc(b.sub)}</div>` : ''}
+        ${b.tasks.map(t => `<div class="task ${taskState(date, t.id) ? 'done' : ''}">
+          <label data-task="${t.id}"><span class="cb"></span><span>${esc(t.text)}</span></label>
+          ${t.custom ? `<button class="mini" data-delx="${t.custom}" style="padding:2px 7px;color:#dc2626">删</button>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  const wrongN = S.wrong[date] || 0;
+  const note = S.notes[date] || '';
+  const edited = !!(S.days[date] && S.days[date].note);
+
+  /* 各科投入（首页统计） */
+  const mm = modMinutes(date);
+  const modTotal = MODS.reduce((a, m) => a + (mm[m.id] || 0), 0);
+  const threeH = (mm.math || 0) + (mm.en || 0) + (mm.cs || 0);
+  const modColor = { math: 'var(--math)', en: 'var(--en)', cs: 'var(--cs)', rev: '#7c3aed' };
+  const modCard = `
+  <div class="card mods">
+    <h3>今日各科投入 <span class="sub">三科 ${fmtMin(threeH)} · 复盘 ${fmtMin(mm.rev || 0)}</span></h3>
+    <div class="modsum">
+      ${MODS.map(m => {
+        const v = mm[m.id] || 0;
+        const pct = modTotal ? Math.round(v / modTotal * 100) : 0;
+        return `<div class="modrow">
+          <span class="mname" style="color:${modColor[m.id]}">${m.name}</span>
+          <div class="mbar"><i style="width:${pct}%;background:${modColor[m.id]}"></i></div>
+          <span class="mval">${fmtMin(v)}</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="small muted" style="margin-top:8px">净专注 ${fmtMin(studyMinutes(date))}（吃饭、午休、休息不算）。改时间或改“科目归属”后这里立刻跟着变。</div>
+  </div>`;
+
+  const html = `
+  <div class="dayhead">
+    <div>
+      <div class="d1">${md(date)}</div>
+      <div class="d2">周${wd(date)} · 第 ${dayNum}/48 天 · ${ph.name}</div>
+      <div class="d2" style="color:var(--tx-3);font-size:11.5px">净专注 ${fmtMin(studyMinutes(date))}${timeSpan(date) ? ' · 在桌 ' + timeSpan(date) : ''}${edited ? ' · <span style="color:#b45309">已自定</span>' : ''}</div>
+    </div>
+    <div class="d3">
+      <div class="stepper">
+        <button data-day="-1" ${i <= 0 ? 'disabled' : ''}>‹</button>
+        <button data-day="0">今天</button>
+        <button data-day="1" ${i >= 47 ? 'disabled' : ''}>›</button>
+      </div>
+      <button class="editDay" data-editday="1">✎ 改这天的日程</button>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="kpi math"><b>${ov.math.done}/${ov.math.total}</b><span>数学套卷</span></div>
+    <div class="kpi cs"><b>${ov.cs.done}/${ov.cs.total}</b><span>408 套卷</span></div>
+    <div class="kpi en"><b>${Object.keys(S.readings).length}/40</b><span>英语阅读</span></div>
+    <div class="kpi rev"><b>${streak()}</b><span>连续打卡天</span></div>
+  </div>
+
+  ${focusHtml}
+
+  ${modCard}
+
+  <div class="card" style="padding:12px 14px">
+    <h3 style="margin-bottom:6px">今日完成度 <span class="sub">${p.done}/${p.total} 项 · ${p.pct}%</span></h3>
+    <div class="dbar" style="margin-top:4px"><i style="width:${p.pct}%"></i></div>
+    <div class="small muted" style="margin-top:8px">${esc(meta.note || '')}</div>
+  </div>
+
+  ${blocksHtml}
+
+  <div class="card">
+    <h3>今日复盘 <span class="sub">给 3 分钟，写下来才算复盘</span></h3>
+    <div class="field" style="margin-bottom:10px">
+      <label style="display:block;font-size:12px;color:var(--tx-2);margin-bottom:5px">今日内容（可改：今天到底做哪套/哪两篇）</label>
+      <input class="inp" id="customNote" value="${esc((S.custom[date] && S.custom[date].note) || '')}" placeholder="如：2011 数一（只做高数部分）+ 2017 Text3/4">
+    </div>
+    <div class="row2" style="margin-bottom:10px">
+      <div>
+        <div class="small muted" style="margin-bottom:4px">今天错了多少题</div>
+        <input class="inp" id="wrongN" type="number" min="0" max="99" inputmode="numeric" value="${wrongN}">
+      </div>
+      <div>
+        <div class="small muted" style="margin-bottom:4px">今天在桌时长（按日程自动算）</div>
+        <div class="inp" style="display:flex;align-items:center;color:var(--tx-2)">${timeSpan(date) || '—'} · 净专注 ${fmtMin(studyMinutes(date))}</div>
+      </div>
+    </div>
+    <textarea class="inp" id="noteBox" placeholder="今天最大收获 / 最卡的地方 / 明天第一件事">${esc(note)}</textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn" id="saveNote">保存今日记录</button>
+      <button class="btn ghost" id="addCustom">+ 加一条任务</button>
+      <button class="btn ghost" id="addMistake">+ 记一道错题</button>
+    </div>
+  </div>
+
+  <div class="note" style="padding:4px 2px 10px">
+    时间不准？点日期右边的「✎ 改这天的日程」自己调。数据只存在这台设备的浏览器里，<b>换手机或清缓存前</b>到「设置 → 导出数据」存一份 JSON。
+  </div>`;
+
+  $('#view-today').innerHTML = html;
+
+  $$('#view-today [data-toggle]').forEach(el => el.addEventListener('click', e => {
+    if (e.target.closest('[data-task]')) return;
+    el.parentElement.classList.toggle('open');
+  }));
+  $$('#view-today [data-task]').forEach(el => el.addEventListener('click', e => {
+    e.stopPropagation();
+    const tid = el.dataset.task;
+    const blk = el.closest('.block');
+    const b = buildBlocks(date).find(x => x.id === blk.dataset.block);
+    toggleTask(date, tid, b.tasks);
+  }));
+  $$('#view-today [data-day]').forEach(el => el.addEventListener('click', () => {
+    const step = Number(el.dataset.day);
+    if (step === 0) { CUR = todayKey(); }
+    else { const ni = clamp(i + step, 0, 47); CUR = DAYS[ni]; }
+    render();
+  }));
+  $$('#view-today [data-jump]').forEach(el => el.addEventListener('click', () => {
+    const id = el.dataset.jump;
+    const e = EXAMS.find(x => x.id === id);
+    setDone(e.id, !(S.exams[e.id] && S.exams[e.id].done));
+  }));
+  const w = $('#wrongN'); if (w) w.addEventListener('change', () => { S.wrong[date] = Number(w.value) || 0; save(); });
+  $$('#view-today [data-editday]').forEach(el => el.addEventListener('click', () => openDayEditor(date, null)));
+  $$('#view-today [data-editb]').forEach(el => el.addEventListener('click', ev => {
+    ev.stopPropagation();
+    openDayEditor(date, el.dataset.editb);
+  }));
+  $('#saveNote').addEventListener('click', () => {
+    S.notes[date] = $('#noteBox').value.slice(0, 800);
+    S.custom[date] = S.custom[date] || {};
+    S.custom[date].note = ($('#customNote') && $('#customNote').value || '').slice(0, 200);
+    save(); toast('今日记录已保存');
+  });
+  const addC = $('#addCustom');
+  if (addC) addC.addEventListener('click', () => {
+    const txt = prompt('加一条今天的任务（会出现在“自定义任务”里）');
+    if (!txt || !txt.trim()) return;
+    S.custom[date] = S.custom[date] || {};
+    S.custom[date].tasks = S.custom[date].tasks || [];
+    S.custom[date].tasks.push({ id: 'c' + Date.now(), text: txt.trim().slice(0, 80) });
+    save(); render(); toast('已添加');
+  });
+  $$('#view-today [data-delx]').forEach(el => el.addEventListener('click', ev => {
+    ev.stopPropagation();
+    const id = el.dataset.delx;
+    S.custom[date] = S.custom[date] || {};
+    S.custom[date].tasks = (S.custom[date].tasks || []).filter(t => t.id !== id);
+    save(); render();
+  }));
+  $('#addMistake').addEventListener('click', () => openMistakeSheet(date));
+}
+
+/* ---------- 渲染：套卷 ---------- */
+function renderPapers() {
+  const groups = { math: EXAMS.filter(e => e.subject === 'math'), cs: EXAMS.filter(e => e.subject === 'cs') };
+  const mk = (title, list, subj) => `
+    <div class="subjtitle"><span class="chip ${subj}">${SUBJ[subj]}</span><span>${title}</span><span class="ln"></span></div>
+    ${list.map(e => {
+      const st = S.exams[e.id] || {};
+      const late = !st.done && e.date < ymd(new Date()) && e.date < todayKey();
+      return `<div class="exam ${st.done ? 'done' : ''}">
+        <div class="no">${e.kind === 'mock' ? '模拟' : md(e.date)}</div>
+        <div class="tt"><b>${esc(e.title)} ${st.done ? '✓' : ''}</b>
+          <span>${e.date} 周${wd(e.date)}${late ? ' · <span style="color:#dc2626">已逾期</span>' : ''}${st.score ? ' · 得分 ' + st.score : ''}</span></div>
+        <div class="acts">
+          <button class="mini ${st.done ? 'on' : ''}" data-ex="${e.id}">${st.done ? '已完成' : '打卡'}</button>
+          <button class="mini rev ${st.review ? 'on' : ''}" data-rev="${e.id}">复盘</button>
+        </div>
+      </div>`;
+    }).join('')}`;
+
+  $('#view-papers').innerHTML = `
+    <div class="card">
+      <h3>套卷总览 <span class="sub">数学 16+2 · 408 18+2 · 共 38 场</span></h3>
+      <div class="small muted" style="margin-bottom:10px">奇数日做数学、偶数日做 408，两科永远不会撞在同一天。点「打卡」记完成，「复盘」表示错题已处理。</div>
+      ${mk('真题 2011–2026', groups.math, 'math')}
+      ${mk('真题 2009–2026', groups.cs, 'cs')}
+      <hr class="sep">
+      <div class="small muted">没按计划日期做也没关系：直接在这里打卡，日历会按实际完成时间重画。</div>
+    </div>`;
+
+  $$('#view-papers [data-ex]').forEach(el => el.addEventListener('click', () => {
+    const id = el.dataset.ex;
+    setDone(id, !(S.exams[id] && S.exams[id].done));
+  }));
+  $$('#view-papers [data-rev]').forEach(el => el.addEventListener('click', () => {
+    const id = el.dataset.rev;
+    const st = S.exams[id] || {};
+    S.exams[id] = Object.assign({}, st, { review: !st.review, reviewAt: !st.review ? Date.now() : null });
+    save(); render(); toast(!st.review ? '已标记复盘' : '已取消复盘');
+  }));
+}
+
+function setDone(id, val) {
+  S.exams[id] = Object.assign({}, S.exams[id], { done: val, date: val ? ymd(new Date()) : null });
+  save(); render();
+  toast(val ? '已打卡 ✓' : '已取消');
+}
+
+/* ---------- 渲染：技能 ---------- */
+function renderSkills() {
+  const readDone = READINGS.filter(r => S.readings[r.id]).length;
+  const ntDone = NEWTYPE.filter(n => S.newtypes[n.id]).length;
+  const codeTotal = Object.values(S.ds).reduce((a, b) => a + (Number(b) || 0), 0);
+  const nextRead = READINGS[clamp(readDone, 0, READINGS.length - 1)];
+  const nextNt = NEWTYPE[clamp(ntDone, 0, NEWTYPE.length - 1)];
+
+  const dsRows = DS_TOPICS.map(t => {
+    const n = Number(S.ds[t.id]) || 0;
+    const pct = clamp(Math.round(n / t.goal * 100), 0, 100);
+    return `<div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">${esc(t.name)}</span>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <span class="pct">${n}/${t.goal}</span>
+      <button class="mini" data-ds="${t.id}" style="padding:3px 8px">+1</button>
+    </div>`;
+  }).join('');
+
+  const readRows = READINGS.map(r => `<button class="chip ${S.readings[r.id] ? 'en on' : ''}" data-rd="${r.id}" style="margin:0 4px 6px 0;font-size:10.5px">${S.readings[r.id] ? '✓ ' : ''}${r.label.replace(' Text', 'T')}</button>`).join('');
+  const ntRows = NEWTYPE.map(n => `<button class="chip ${S.newtypes[n.id] ? 'en on' : ''}" data-nt="${n.id}" style="margin:0 4px 6px 0;font-size:10.5px">${S.newtypes[n.id] ? '✓ ' : ''}${n.y}</button>`).join('');
+
+  $('#view-skills').innerHTML = `
+    <div class="card">
+      <h3>英语阅读进度 <span class="sub">${readDone}/40 篇 · 新题型 ${ntDone}/10</span></h3>
+      <div class="dbar" style="margin:2px 0 8px"><i style="width:${Math.round(readDone / READINGS.length * 100)}%"></i></div>
+      <div class="small muted" style="margin-bottom:8px">下一篇：<b style="color:var(--tx)">${nextRead.label}</b> · 下个新题型：<b style="color:var(--tx)">${nextNt.label}</b></div>
+      <div>${readRows}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--tx-2)">新题型（2017–2026）</div>
+      <div style="margin-top:6px">${ntRows}</div>
+    </div>
+
+    <div class="card">
+      <h3>数据结构代码题 <span class="sub">累计 ${codeTotal} 道</span></h3>
+      <div class="small muted" style="margin-bottom:10px">每天 17:30–18:50 手写一道，不求量，求能在纸上跑通。做完点 +1。</div>
+      ${dsRows}
+    </div>
+
+    <div class="card">
+      <h3>作文模板 <span class="sub">5 套 · 反复默写</span></h3>
+      ${TEMPLATES.map(t => `<div class="task"><label data-tpl="${t.id}"><span class="cb" style="border-radius:5px"></span><span>${esc(t.text)}</span></label></div>`).join('')}
+      <div class="small muted" style="margin-top:6px">模板不是背完就会用：每 3 天用真题题目套写一次。</div>
+    </div>`;
+
+  $$('#view-skills [data-rd]').forEach(el => el.addEventListener('click', () => {
+    const id = el.dataset.rd;
+    if (S.readings[id]) delete S.readings[id]; else S.readings[id] = 1;
+    save(); renderSkills();
+  }));
+  $$('#view-skills [data-nt]').forEach(el => el.addEventListener('click', () => {
+    const id = el.dataset.nt;
+    if (S.newtypes[id]) delete S.newtypes[id]; else S.newtypes[id] = 1;
+    save(); renderSkills();
+  }));
+  $$('#view-skills [data-ds]').forEach(el => el.addEventListener('click', () => {
+    const k = el.dataset.ds;
+    S.ds[k] = (Number(S.ds[k]) || 0) + 1;
+    save(); renderSkills(); toast('+1，累计 ' + Object.values(S.ds).reduce((a, b) => a + (Number(b) || 0), 0) + ' 道');
+  }));
+}
+
+/* ---------- 渲染：日历 ---------- */
+function renderCalendar() {
+  const ov = overall();
+  const today = todayKey();
+
+  // 7 列网格：从 11/1（周日）开始，正好是周日
+  const cells = [];
+  const firstWd = parse(START).getDay();
+  for (let k = 0; k < firstWd; k++) cells.push('<div></div>');
+  DAYS.forEach((d, i) => {
+    const ex = examOn(d);
+    const p = dayProgress(d);
+    const isPast = d < today;
+    let cls = 'cell';
+    if (ex.some(e => e.kind === 'mock')) cls += ' mock';
+    else if (ex.length) cls += ' ' + ex[0].subject;
+    else cls += ' rev';
+    if (isPast) cls += ' past';
+    if (d === today) cls += ' today';
+    // 完成度决定底部填充高度
+    const fillH = Math.round(p.pct * 0.9);
+    // 今天/过去的日子有未打卡的套卷 → 右上角 “!”
+    const miss = d <= today && ex.some(e => !(S.exams[e.id] && S.exams[e.id].done));
+    let tag = '';
+    if (ex.length) {
+      const e = ex[0];
+      tag = e.kind === 'mock' ? '模拟' : (e.subject === 'math' ? String(e.year).slice(2) + '·数' : String(e.year).slice(2) + '·408');
+    }
+    cells.push(`<div class="${cls}" data-cal="${d}" title="${d} · 完成 ${p.pct}%">
+      <div class="d">${parse(d).getDate()}</div>
+      <div class="dot">${tag}</div>
+      ${p.pct > 0 ? `<div class="fill" style="height:${fillH}%"></div>` : ''}
+      ${miss ? '<div class="mk">!</div>' : ''}
+    </div>`);
+  });
+
+  const wdHead = ['日', '一', '二', '三', '四', '五', '六'].map(w => `<div class="wd">${w}</div>`).join('');
+
+  // 每周完成度
+  const weeks = [];
+  for (let w = 0; w < 7; w++) {
+    const ds = DAYS.slice(w * 7, w * 7 + 7);
+    if (!ds.length) continue;
+    let t = 0, dn = 0;
+    ds.forEach(d => { const p = dayProgress(d); t += p.total; dn += p.done; });
+    weeks.push({ w, label: md(ds[0]) + '–' + md(ds[ds.length - 1]), dn, t, pct: t ? Math.round(dn / t * 100) : 0 });
+  }
+
+  // 48 天各科累计投入（含今天已过的那部分）
+  const sumMod = { math: 0, en: 0, cs: 0, rev: 0 };
+  DAYS.forEach(d => { const m = modMinutes(d); MODS.forEach(x => { sumMod[x.id] += m[x.id] || 0; }); });
+  const sumTotal = MODS.reduce((a, x) => a + sumMod[x.id], 0);
+  const modColor = { math: 'var(--math)', en: 'var(--en)', cs: 'var(--cs)', rev: '#7c3aed' };
+  const sumCard = `
+    <div class="card mods">
+      <h3>48 天各科累计 <span class="sub">合计 ${Math.round(sumTotal / 60)} 小时</span></h3>
+      ${MODS.map(m => {
+        const v = sumMod[m.id];
+        const pct = sumTotal ? Math.round(v / sumTotal * 100) : 0;
+        return `<div class="modrow">
+          <span class="mname" style="color:${modColor[m.id]}">${m.name}</span>
+          <div class="mbar"><i style="width:${pct}%;background:${modColor[m.id]}"></i></div>
+          <span class="mval">${Math.round(v / 60)}h</span>
+        </div>`;
+      }).join('')}
+      <div class="small muted" style="margin-top:8px">按当前日程估算（每天改时间/改科目后这里同步变）。三科合计约 ${Math.round((sumMod.math + sumMod.en + sumMod.cs) / 60)} 小时。</div>
+    </div>`;
+
+  $('#view-calendar').innerHTML = `
+    <div class="card">
+      <h3>48 天总览 <span class="sub">点格子跳到那一天</span></h3>
+      <div class="cal">${wdHead}${cells.join('')}</div>
+      <div class="legend" style="margin-top:10px">
+        <span><i style="background:#2563eb"></i>数学卷</span>
+        <span><i style="background:#d97706"></i>408 卷</span>
+        <span><i style="background:#7c3aed"></i>模拟</span>
+        <span><i style="background:#9ca3af"></i>复盘/缓冲</span>
+        <span style="color:var(--tx-3)">底部高度＝当天完成度</span>
+      </div>
+    </div>
+
+    ${sumCard}
+
+    <div class="card">
+      <h3>套卷消耗曲线 <span class="sub">理想 vs 实际</span></h3>
+      ${burndownSvg(ov)}
+      <div class="legend"><span><i style="background:#2563eb"></i>按计划剩余</span><span><i style="background:#059669"></i>实际剩余</span></div>
+    </div>
+
+    <div class="card">
+      <h3>三科完成度</h3>
+      <div class="rings">
+        ${ring(ov.math.done, ov.math.total, '#2563eb', '数学 18 场')}
+        ${ring(ov.cs.done, ov.cs.total, '#d97706', '408 20 场')}
+        ${ring(Object.keys(S.readings).length, 40, '#059669', '阅读 40 篇')}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>每周完成度</h3>
+      ${weeks.map(w => `<div class="wk"><span class="lbl">第${w.w + 1}周</span><div class="bar"><i style="width:${w.pct}%"></i></div><span class="pct">${w.pct}%</span></div>`).join('')}
+    </div>`;
+
+  $$('#view-calendar [data-cal]').forEach(el => el.addEventListener('click', () => {
+    CUR = el.dataset.cal; switchView('today');
+  }));
+}
+
+function ring(done, total, color, label) {
+  const pct = total ? done / total : 0;
+  const r = 34, c = 2 * Math.PI * r, off = c * (1 - pct);
+  return `<div class="ring">
+    <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="${r}" fill="none" stroke="#eef0f4" stroke-width="7"/>
+    <circle cx="42" cy="42" r="${r}" fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 42 42)"/></svg>
+    <div class="v">${done}/${total}</div><div class="l">${label}</div>
+  </div>`;
+}
+
+function burndownSvg(ov) {
+  const W = 560, H = 150, padL = 26, padR = 8, padT = 10, padB = 18;
+  const total = ov.total;
+  const x = i => padL + i * (W - padL - padR) / 47;
+  const y = v => padT + (1 - v / total) * (H - padT - padB);
+  const ideal = DAYS.map((d, i) => `${x(i)},${y(total - total * i / 47)}`).join(' ');
+  // 实际：按日期统计已完成的套卷（用打卡时间）
+  const pts = [];
+  let doneCum = 0;
+  DAYS.forEach((d, i) => {
+    doneCum = EXAMS.filter(e => S.exams[e.id] && S.exams[e.id].done && String(S.exams[e.id].date || '') <= d).length;
+    pts.push(`${x(i)},${y(Math.max(0, total - doneCum))}`);
+  });
+  const lastIdx = clamp(idxOf(todayKey()), 0, 47);
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#e5e7eb"/>
+    <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="#e5e7eb"/>
+    <polyline points="${ideal}" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 4"/>
+    <polyline points="${pts.slice(0, lastIdx + 1).join(' ')}" fill="none" stroke="#059669" stroke-width="2.6" stroke-linejoin="round"/>
+    <circle cx="${x(lastIdx)}" cy="${y(Math.max(0, total - EXAMS.filter(e => S.exams[e.id] && S.exams[e.id].done).length))}" r="3.5" fill="#059669"/>
+    <text x="${padL}" y="${H - 5}" fill="#9ca3af" font-size="9">11/1</text>
+    <text x="${W - padR}" y="${H - 5}" fill="#9ca3af" font-size="9" text-anchor="end">12/18</text>
+    <text x="${padL + 2}" y="${padT + 9}" fill="#9ca3af" font-size="9">剩 ${total}</text>
+    <text x="${padL + 2}" y="${H - padB - 4}" fill="#9ca3af" font-size="9">0</text>
+  </svg>`;
+}
+
+/* ---------- 渲染：复盘 ---------- */
+function renderReview() {
+  const list = (S.mistakes || []).slice().sort((a, b) => (b.next || '').localeCompare(a.next || ''));
+  const due = list.filter(m => m.next && m.next <= todayKey() && !m.reviewed);
+  const html = `
+    <div class="card">
+      <h3>错题卡片 <span class="sub">按日期间隔复习：1 → 3 → 7 → 15 天</span></h3>
+      ${due.length ? `<div class="small" style="color:#b45309;margin-bottom:8px">今天有 ${due.length} 张到期，先过一遍再去开新卷。</div>` : `<div class="small muted" style="margin-bottom:8px">今天没有到期卡片。继续按计划推进即可。</div>`}
+      <button class="btn sm" id="newMistake">+ 记一道错题</button>
+    </div>
+    ${list.length ? list.map(m => `
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="chip ${m.subject === 'math' ? 'math' : m.subject === 'cs' ? 'cs' : 'en'}">${SUBJ[m.subject] || m.subject}</span>
+          <span class="small muted">${m.date || ''}</span>
+          <span class="pill" style="margin-left:auto">${m.reviewed ? '已消化' : (m.next ? '下次 ' + m.next : '')}</span>
+        </div>
+        <b style="font-size:13.5px">${esc(m.title)}</b>
+        ${m.reason ? `<p style="margin:4px 0 0;font-size:12.5px;color:var(--tx-2)">错因：${esc(m.reason)}</p>` : ''}
+        ${m.fix ? `<p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-2)">正解/方法：${esc(m.fix)}</p>` : ''}
+        <div class="row" style="display:flex;gap:8px;margin-top:10px">
+          <button class="mini ${m.reviewed ? 'on' : ''}" data-mrev="${m.id}">${m.reviewed ? '已消化 ✓' : '再消化一次'}</button>
+          <button class="mini" data-mdel="${m.id}" style="color:#dc2626">删除</button>
+        </div>
+      </div>`).join('') : `<div class="empty">还没有错题卡片。<br>做完第一套卷，把最典型的 3 道记进来就够了。</div>`}`;
+  $('#view-review').innerHTML = html;
+
+  $('#newMistake').addEventListener('click', () => openMistakeSheet(todayKey()));
+  $$('#view-review [data-mrev]').forEach(el => el.addEventListener('click', () => {
+    const m = S.mistakes.find(x => x.id === el.dataset.mrev);
+    if (!m) return;
+    m.reviewed = !m.reviewed;
+    m.reviewCount = (m.reviewCount || 0) + 1;
+    m.next = m.reviewed ? null : addDays(todayKey(), [1, 3, 7, 15, 30][Math.min(4, m.reviewCount)]);
+    save(); renderReview();
+  }));
+  $$('#view-review [data-mdel]').forEach(el => el.addEventListener('click', () => {
+    S.mistakes = S.mistakes.filter(x => x.id !== el.dataset.mdel);
+    save(); renderReview(); toast('已删除');
+  }));
+}
+
+function openMistakeSheet(date) {
+  openSheet(`
+    <h3>记一道错题</h3>
+    <div class="hint">只记“会做但做错”和“完全没思路”的题，一道题一行字。</div>
+    <div class="field"><label>科目</label>
+      <select class="inp" id="mSubj"><option value="math">数学一</option><option value="cs">408</option><option value="en">英语一</option></select></div>
+    <div class="field"><label>题目（哪年哪题，一句话）</label>
+      <input class="inp" id="mTitle" placeholder="如 2015 数一 T19：级数求和漏了端点"></div>
+    <div class="field"><label>错因</label>
+      <input class="inp" id="mReason" placeholder="如 计算错/概念错/没思路/审题错"></div>
+    <div class="field"><label>正确方法（1–2 行）</label>
+      <textarea class="inp" id="mFix" placeholder="下次遇到先做什么？"></textarea></div>
+    <button class="btn" id="mSave" style="width:100%">保存</button>
+  `);
+  $('#mSave').addEventListener('click', () => {
+    const t = $('#mTitle').value.trim();
+    if (!t) { toast('先写题目标题'); return; }
+    S.mistakes.push({
+      id: 'x' + Date.now(), date: date, subject: $('#mSubj').value,
+      title: t, reason: $('#mReason').value.trim(), fix: $('#mFix').value.trim(),
+      next: addDays(todayKey(), 1), reviewed: false, reviewCount: 0,
+    });
+    save(); closeSheet(); render();
+    toast('已加入错题卡片');
+  });
+}
+
+/* ---------- 设置 ---------- */
+function openSettings() {
+  openSheet(`
+    <h3>设置与数据</h3>
+    <div class="hint">这个页面不联网、不上传，所有记录只保存在当前浏览器。</div>
+    <div class="note" style="background:#f2f4f7;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:14px">
+      <b>想改每天的作息？</b>回「今日」页，点日期右边的 <b>✎ 改这天的日程</b>：每块的起止时间、标题、任务都能改，也能加块/删块；改完可「套用到后面所有天」。
+    </div>
+    <div class="field"><label>初试日期</label>
+      <input class="inp" id="setExam" type="date" value="${EXAM}"></div>
+    <div class="field"><label>计划开始 / 结束</label>
+      <div class="row2"><input class="inp" id="setStart" type="date" value="${START}"><input class="inp" id="setEnd" type="date" value="${END}"></div></div>
+    <button class="btn ghost sm" id="setSave" style="margin-bottom:14px">保存日期（刷新后生效）</button>
+    <hr class="sep">
+    <div class="field"><label>备份 / 换手机</label>
+      <div class="row2">
+        <button class="btn ghost sm" id="expBtn">导出 JSON</button>
+        <button class="btn ghost sm" id="impBtn">导入 JSON</button>
+      </div>
+      <input type="file" id="impFile" accept="application/json,.json" style="display:none">
+      <div class="small muted" style="margin-top:8px">换手机：旧手机导出 → 把文件发给自己 → 新手机打开本页 → 导入。</div>
+    </div>
+    <hr class="sep">
+    <div class="field"><label>清空全部数据</label>
+      <button class="btn danger sm" id="resetBtn">清空（不可恢复）</button></div>
+    <hr class="sep">
+    <div class="note">
+      <b>手机使用建议</b><br>
+      1. 把本页加到主屏幕：iOS Safari「分享 → 添加到主屏幕」，Android Chrome「⋮ → 添加到主屏幕」。<br>
+      2. 用 file:// 打开也能用，但部分浏览器会清 localStorage；想稳一点就用免费的静态托管（见使用说明）。<br>
+      3. 每次大调整前先「导出 JSON」，这是唯一可靠的备份。
+    </div>
+  `);
+  $('#setSave').addEventListener('click', () => {
+    const o = { exam: $('#setExam').value, start: $('#setStart').value, end: $('#setEnd').value };
+    if (!o.exam || !o.start || !o.end) { toast('日期不能为空'); return; }
+    S.settings = o; save();
+    toast('已保存，3 秒后自动刷新');
+    setTimeout(() => location.reload(), 1200);
+  });
+  $('#expBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'kaoyan48-' + ymd(new Date()) + '.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    toast('已导出，请保存到网盘/微信文件传输助手');
+  });
+  $('#impBtn').addEventListener('click', () => $('#impFile').click());
+  $('#impFile').addEventListener('change', ev => {
+    const f = ev.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const o = JSON.parse(r.result);
+        if (!o || typeof o !== 'object') throw 0;
+        S = Object.assign(freshState(), o, {
+          days: o.days || {}, custom: o.custom || {}, hours: o.hours || {}, exams: o.exams || {},
+          tasks: o.tasks || {}, readings: Object.assign({}, PRESET_READ, o.readings || {}),
+          newtypes: o.newtypes || {}, ds: o.ds || {}, mistakes: o.mistakes || [],
+        });
+        save(); closeSheet(); render(); toast('导入成功');
+      } catch (e) { toast('文件格式不对'); }
+    };
+    r.readAsText(f);
+  });
+  $('#resetBtn').addEventListener('click', () => {
+    if (!confirm('确定清空所有打卡和复盘？建议先导出备份。')) return;
+    S = JSON.parse(JSON.stringify(DEFAULT));
+    save(); closeSheet(); render(); toast('已清空');
+  });
+}
+
+/* ---------- UI 基础 ---------- */
+let sheetOpen = false;
+function openSheet(html) {
+  const sh = $('#sheet');
+  sh.innerHTML = `<div class="grab"></div>` + html;
+  sh.classList.add('on'); $('#mask').classList.add('on'); sheetOpen = true;
+}
+function closeSheet() {
+  $('#sheet').classList.remove('on'); $('#mask').classList.remove('on'); sheetOpen = false;
+}
+$('#mask').addEventListener('click', closeSheet);
+$('#openSettings').addEventListener('click', openSettings);
+
+let toastTimer = 0;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 1800);
+}
+
+/* ---------- 视图切换 ---------- */
+function switchView(v) {
+  VIEW = v;
+  $$('#tabs .tab').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  $$('#bottomNav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  $$('.view').forEach(s => s.classList.toggle('on', s.id === 'view-' + v));
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$$('#tabs .tab').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+$$('#bottomNav button').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+
+/* ---------- header ---------- */
+function renderHeader() {
+  const today = new Date();
+  const tk = ymd(today);
+  const dExam = diffDays(tk, EXAM);
+  const dStart = diffDays(tk, START);
+  const inPlan = tk >= START && tk <= END;
+  const dayNow = idxOf(tk) + 1;
+
+  let num, unit, l1, l2;
+  if (tk < START) {
+    num = diffDays(tk, START); unit = '天';
+    l1 = '距计划开始（11/1）';
+    l2 = '开始后 48 天，到 12/18 收尾';
+  } else if (dExam >= 0) {
+    num = dExam; unit = '天';
+    l1 = '距 2026-12-19 初试';
+    l2 = inPlan ? `第 ${dayNow}/48 个学习日 · 今天不算还有 ${dExam - 1} 天` : '计划已结束';
+  } else {
+    num = Math.abs(dExam); unit = '天前';
+    l1 = '初试已结束'; l2 = '';
+  }
+  $('#dNum').textContent = num;
+  $('#dUnit').textContent = unit;
+  $('#heroL1').textContent = l1;
+  $('#heroL2').textContent = l2;
+
+  const doneDays = inPlan ? clamp(dayNow, 0, 48) : (tk > END ? 48 : 0);
+  $('#dbarFill').style.width = (doneDays / 48 * 100) + '%';
+  const ov = overall();
+  $('#dbarLeft').textContent = `已过 ${doneDays} / 48 天`;
+  $('#dbarRight').textContent = `套卷 ${ov.done} / ${ov.total}`;
+}
+
+/* ---------- 主渲染 ---------- */
+function render() {
+  renderHeader();
+  if (VIEW === 'today') renderToday();
+  else if (VIEW === 'papers') renderPapers();
+  else if (VIEW === 'skills') renderSkills();
+  else if (VIEW === 'calendar') renderCalendar();
+  else if (VIEW === 'review') renderReview();
+}
+
+render();
+})();
+</script>
+</body>
+</html>
