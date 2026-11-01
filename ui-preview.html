@@ -1,0 +1,1353 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>浅色 UI 预览 · 48 天冲刺</title>
+<style>
+:root{
+  /* 背景与表面 */
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f2f4f7; --line:#e8eaee; --line-2:#dfe3e9;
+  /* 文字 */
+  --tx:#111827; --tx-2:#4b5563; --tx-3:#9ca3af;
+  /* 主色与科目色（浅底 + 深字） */
+  --blue:#2563eb; --blue-ink:#1d4ed8; --blue-wash:#eff4ff;
+  --math:#2563eb; --math-wash:#eff4ff;
+  --en:#059669; --en-wash:#ecfdf5;
+  --cs:#d97706; --cs-wash:#fff7ed;
+  --rev:#7c3aed; --rev-wash:#f5f3ff;
+  --red:#dc2626; --red-wash:#fef2f2;
+  /* 形状 */
+  --r:16px; --r-sm:12px; --gap:12px;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -10px rgba(16,24,40,.10);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{background:var(--bg);color-scheme:light}
+input,textarea,select{-webkit-appearance:none;appearance:none;font-size:16px;font-family:inherit}
+input[type="date"]{min-height:40px}
+body{
+  background:var(--bg);color:var(--tx);font-family:var(--font);font-size:15px;line-height:1.55;
+  padding-bottom:calc(76px + var(--safe-b));overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:var(--blue)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* ---------- header ---------- */
+header{padding:22px 0 4px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{font-size:13px;letter-spacing:.01em;color:var(--tx-3);font-weight:500}
+.brand b{color:var(--tx);font-weight:700;letter-spacing:-.01em}
+.settingsBtn{font-size:12.5px;color:var(--tx-2);border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;background:var(--surface)}
+.hero{display:flex;align-items:flex-end;gap:16px;margin-top:14px}
+.count{display:flex;align-items:baseline;gap:6px}
+.count .num{font-family:var(--mono);font-size:60px;line-height:.9;font-weight:700;letter-spacing:-.045em;color:var(--tx)}
+.count .unit{font-size:14px;color:var(--tx-3);font-weight:500}
+.heroMeta{flex:1;min-width:0;padding-bottom:6px}
+.heroMeta .l1{font-size:13px;color:var(--tx-2);font-weight:500}
+.heroMeta .l2{font-size:12px;color:var(--tx-3);margin-top:2px}
+.dbar{height:6px;border-radius:99px;background:#eceef2;margin-top:16px;overflow:hidden}
+.dbar>i{display:block;height:100%;border-radius:99px;background:var(--blue);transition:width .5s ease}
+.dbarTxt{display:flex;justify-content:space-between;font-size:11.5px;color:var(--tx-3);margin-top:8px}
+
+/* ---------- tabs ---------- */
+nav.tabs{display:flex;gap:18px;position:sticky;top:0;z-index:20;background:rgba(246,247,249,.92);backdrop-filter:blur(12px);
+  padding:10px 0 0;margin-top:14px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:0 0 10px;font-size:13.5px;color:var(--tx-3);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab.on{color:var(--tx);border-bottom-color:var(--tx)}
+.tab:active{color:var(--tx-2)}
+
+/* ---------- generic ---------- */
+section.view{display:none;padding-top:18px}
+section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:var(--gap);box-shadow:var(--shadow)}
+.card h3{margin:0 0 12px;font-size:14px;color:var(--tx);display:flex;align-items:center;gap:8px;font-weight:650;letter-spacing:-.01em}
+.card h3 .sub{font-size:11.5px;color:var(--tx-3);font-weight:500;margin-left:auto;text-align:right}
+.muted{color:var(--tx-3)}
+.small{font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--tx-2);background:var(--surface)}
+.chip.math{color:var(--math);border-color:#dbe6ff;background:var(--math-wash)}
+.chip.cs{color:var(--cs);border-color:#fde8cf;background:var(--cs-wash)}
+.chip.en{color:var(--en);border-color:#d1fae5;background:var(--en-wash)}
+.chip.rev{color:var(--rev);border-color:#e9e3ff;background:var(--rev-wash)}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill{font-size:10.5px;padding:1px 7px;border-radius:999px;background:var(--surface-2);color:var(--tx-3)}
+
+/* day intro */
+.dayhead{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.dayhead .d1{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.dayhead .d2{font-size:12px;color:var(--tx-2);line-height:1.4}
+.dayhead .d3{margin-left:auto;text-align:right}
+.stepper{display:flex;gap:6px;justify-content:flex-end}
+.stepper button{min-width:34px;height:32px;padding:0 10px;border-radius:9px;background:var(--surface);border:1px solid var(--line-2);font-size:13px;font-weight:600;color:var(--tx-2)}
+.stepper button:disabled{opacity:.4}
+.phasebar{display:flex;gap:6px;margin:2px 0 16px}
+.phasebar div{flex:1;height:4px;border-radius:9px;background:#eceef2;overflow:hidden}
+.phasebar i{display:block;height:100%;background:var(--blue)}
+
+/* focus card */
+.focus{border-radius:var(--r);padding:16px;margin-bottom:12px;border:1px solid var(--line);position:relative;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.focus.math{background:linear-gradient(135deg,var(--math-wash),#fff 72%);border-color:#dbe6ff}
+.focus.cs{background:linear-gradient(135deg,var(--cs-wash),#fff 72%);border-color:#fde8cf}
+.focus.rev{background:linear-gradient(135deg,var(--rev-wash),#fff 72%);border-color:#e9e3ff}
+.focus .k{font-size:11px;letter-spacing:.08em;color:var(--tx-3);font-weight:600;text-transform:uppercase}
+.focus .t{font-size:19px;font-weight:700;margin:5px 0 3px;letter-spacing:-.02em}
+.focus .s{font-size:12.5px;color:var(--tx-2)}
+.focus .go{display:inline-block;margin-top:10px;font-size:11.5px;padding:6px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);color:var(--tx-2);font-weight:600}
+
+/* blocks */
+.block{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:8px;overflow:hidden;background:var(--surface)}
+.block.done{opacity:.62}
+.block.now{border-color:#c7d7fb;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.block.open>header{border-bottom:1px solid var(--line)}
+.block>header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+.time{font-family:var(--mono);font-size:11px;color:var(--tx-3);min-width:84px;letter-spacing:-.02em}
+.block .name{font-size:13.5px;font-weight:600;flex:1;min-width:0;letter-spacing:-.01em}
+.block .dur{font-size:11px;color:var(--tx-3);font-family:var(--mono)}
+.caret{font-size:10px;color:var(--tx-3);transition:transform .2s}
+.block.open .caret{transform:rotate(90deg)}
+.block .body{display:none;padding:2px 14px 12px}
+.block.open .body{display:block}
+.task{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.task:first-child{border-top:0}
+.task label{display:flex;gap:10px;align-items:flex-start;flex:1;font-size:13px;color:var(--tx-2);cursor:pointer;line-height:1.5}
+.task.done label{color:var(--tx-3);text-decoration:line-through}
+.cb{flex:0 0 19px;width:19px;height:19px;border-radius:5px;border:1.5px solid #d1d5db;margin-top:1px;position:relative;transition:.15s;background:var(--surface)}
+.task.done .cb{background:var(--blue);border-color:var(--blue)}
+.task.done .cb::after{content:"";position:absolute;left:6px;top:2px;width:4.5px;height:9.5px;border:2px solid #fff;border-top:0;border-left:0;transform:rotate(42deg)}
+.tag{font-size:10.5px;padding:1px 6px;border-radius:6px;background:var(--surface-2);color:var(--tx-3);margin-left:4px;white-space:nowrap}
+
+/* progress strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 11px}
+.kpi b{display:block;font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:-.03em;color:var(--tx)}
+.kpi span{font-size:10.5px;color:var(--tx-3)}
+.kpi.math b{color:var(--math)} .kpi.cs b{color:var(--cs)} .kpi.en b{color:var(--en)}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .wd{font-size:10px;color:var(--tx-3);text-align:center;padding-bottom:3px}
+.cell{aspect-ratio:1/1.1;border-radius:8px;border:1px solid var(--line);background:var(--surface);padding:4px 4px 3px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.cell .d{font-size:9.5px;color:var(--tx-3);font-family:var(--mono)}
+.cell .dot{font-size:8.5px;font-weight:600;line-height:1.15;color:var(--tx-2);word-break:break-all}
+.cell.math{border-color:#dbe6ff;background:var(--math-wash)}
+.cell.cs{border-color:#fde8cf;background:var(--cs-wash)}
+.cell.mock{border-color:#e9e3ff;background:var(--rev-wash)}
+.cell.rev{background:var(--surface-2)}
+.cell .fill{position:absolute;left:0;bottom:0;width:100%;background:rgba(37,99,235,.13);pointer-events:none}
+.cell.today{outline:2px solid var(--tx);outline-offset:-1px}
+.cell.past{opacity:.78}
+.cell .mk{position:absolute;right:3px;top:2px;font-size:9px;color:var(--cs);font-weight:700}
+
+/* charts */
+.chart{width:100%;display:block;overflow:visible}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--tx-2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+/* tables / lists */
+.exam{display:flex;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.exam:first-child{border-top:0}
+.exam .no{font-family:var(--mono);font-size:11px;color:var(--tx-3);width:44px;flex:0 0 auto}
+.exam .tt{flex:1;min-width:0}
+.exam .tt b{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.exam .tt span{font-size:11px;color:var(--tx-3)}
+.exam .acts{display:flex;gap:6px;align-items:center}
+.mini{font-size:11.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);color:var(--tx-2);background:var(--surface);font-weight:500}
+.mini.on{background:var(--blue-wash);border-color:#c7d7fb;color:var(--blue-ink)}
+.mini.rev.on{background:var(--en-wash);border-color:#d1fae5;color:#047857}
+.exam.hidden{display:none}
+.subjtitle{display:flex;align-items:center;gap:8px;margin:18px 0 2px;font-size:13px;font-weight:650;letter-spacing:-.01em}
+.subjtitle .ln{flex:1;height:1px;background:var(--line)}
+
+/* ring */
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ring{text-align:center;position:relative}
+.ring svg{width:100%;max-width:92px;height:auto;display:block;margin:0 auto}
+.ring .v{font-family:var(--mono);font-size:14px;font-weight:700;position:absolute;top:0;left:0;right:0;height:92px;
+  display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
+.ring .l{font-size:11px;color:var(--tx-3);margin-top:4px}
+
+/* weekly bars */
+.wk{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:11.5px;color:var(--tx-2)}
+.wk .lbl{width:64px;color:var(--tx-3)}
+.wk .bar{flex:1;height:7px;border-radius:9px;background:#eef0f4;overflow:hidden}
+.wk .bar i{display:block;height:100%;background:var(--blue);border-radius:9px}
+.wk .pct{width:38px;text-align:right;font-family:var(--mono);color:var(--tx-3)}
+
+/* review tab */
+.mistake{border-left:3px solid var(--line-2);padding:8px 0 8px 12px;margin:8px 0;background:var(--surface-2);border-radius:0 10px 10px 0}
+.mistake b{font-size:13px;font-weight:600}
+.mistake p{margin:2px 0;font-size:12px;color:var(--tx-2);white-space:pre-wrap}
+.mistake .row{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.inp{background:var(--surface);border:1px solid var(--line-2);color:var(--tx);border-radius:10px;padding:9px 11px;font-size:13px;font-family:inherit;width:100%}
+.inp:focus{outline:none;border-color:#b6c8f5;box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+textarea.inp{resize:vertical;min-height:68px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{background:var(--blue);color:#fff;font-weight:600;font-size:13px;padding:10px 15px;border-radius:10px;letter-spacing:-.01em}
+.btn:active{opacity:.86}
+.btn.ghost{background:var(--surface);border:1px solid var(--line-2);color:var(--tx-2)}
+.btn.sm{font-size:12px;padding:7px 11px;border-radius:8px}
+.btn.danger{background:var(--red-wash);border:1px solid #fecaca;color:var(--red)}
+.empty{text-align:center;color:var(--tx-3);font-size:12.5px;padding:26px 10px}
+
+/* bottom nav */
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);padding:7px 4px calc(7px + var(--safe-b));display:flex;max-width:720px;margin:0 auto}
+nav.bottom button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;font-size:10px;color:var(--tx-3);font-weight:600}
+nav.bottom button .ic{font-size:17px;line-height:1}
+nav.bottom button.on{color:var(--tx)}
+
+/* sheet */
+.mask{position:fixed;inset:0;background:rgba(17,24,39,.32);z-index:40;display:none;backdrop-filter:blur(2px)}
+.mask.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--surface);border-radius:20px 20px 0 0;border-top:1px solid var(--line);
+  max-height:88vh;overflow:auto;padding:8px 18px calc(22px + var(--safe-b));transform:translateY(102%);transition:transform .26s ease;max-width:720px;margin:0 auto;box-shadow:0 -12px 40px -20px rgba(16,24,40,.25)}
+.sheet.on{transform:none}
+.grab{width:42px;height:4px;border-radius:9px;background:#e5e7eb;margin:6px auto 14px}
+.sheet h3{margin:0 0 6px;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.sheet .hint{font-size:12px;color:var(--tx-3);margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--tx-2);margin-bottom:6px;font-weight:500}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,14px);background:var(--tx);border:1px solid var(--tx);color:#fff;
+  padding:9px 16px;border-radius:999px;font-size:12.5px;opacity:0;pointer-events:none;transition:.22s;z-index:60;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
+.note{font-size:12px;color:var(--tx-3);line-height:1.7}
+.note b{color:var(--tx-2)}
+
+/* ---------- 日程编辑 ---------- */
+.editDay{display:block;margin-top:7px;font-size:11.5px;padding:6px 10px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--surface);color:var(--tx-2);font-weight:600}
+.block .mini[data-editb]{padding:2px 7px;font-size:11px;color:var(--tx-3);background:var(--surface);border:1px solid var(--line)}
+.block .mini[data-editb]:active{background:var(--surface-2)}
+.eb{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface);overflow:hidden}
+.eb.open{border-color:#c7d7fb;box-shadow:0 0 0 3px rgba(37,99,235,.06)}
+.ehead{display:flex;align-items:center;gap:8px;padding:11px 12px;cursor:pointer}
+.eb.open .ehead{background:var(--blue-wash)}
+.etime{font-family:var(--mono);font-size:11px;color:var(--tx-2);min-width:84px}
+.ename{flex:1;min-width:0;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.emins{font-size:10.5px;color:var(--tx-3);font-family:var(--mono)}
+.eb .caret{font-size:10px;color:var(--tx-3);transition:transform .2s}
+.eb.open .caret{transform:rotate(90deg)}
+.ebody{display:none;padding:12px;border-top:1px solid var(--line)}
+.eb.open .ebody{display:block}
+.ebody label{display:block;font-size:11.5px;color:var(--tx-3);margin-bottom:4px}
+.ebody .inp{font-size:14px!important;padding:8px 10px}
+.ebody .row2{gap:8px}
+.trow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.trow .inp{flex:1;min-width:0}
+.ebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+/* 各科投入 */
+.mods .sub{color:var(--tx-3)}
+.modsum{margin-top:2px}
+.modrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+.modrow .mname{width:62px;flex:0 0 auto;font-size:12px;font-weight:600}
+.modrow .mbar{flex:1;height:8px;border-radius:9px;background:#eef0f4;overflow:hidden}
+.modrow .mbar i{display:block;height:100%;border-radius:9px;transition:width .4s}
+.modrow .mval{width:74px;text-align:right;font-family:var(--mono);font-size:11.5px;color:var(--tx-2);flex:0 0 auto}
+.casc{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:6px;font-size:12.5px;color:var(--tx-2)}
+.casc label{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--tx);margin-bottom:5px}
+.casc input[type=checkbox]{width:17px;height:17px;accent-color:var(--blue)}
+@media(max-width:360px){.count .num{font-size:50px}.strip{grid-template-columns:repeat(2,1fr)}nav.tabs{gap:16px}}
+
+body{background:#eef0f4}
+.phone{max-width:400px;margin:0 auto;background:var(--bg);min-height:100vh;padding-bottom:40px;box-shadow:0 0 0 1px #e5e7eb}
+.pvlabel{max-width:400px;margin:26px auto 8px;font:600 12px/1.4 -apple-system,"PingFang SC",sans-serif;color:#6b7280;letter-spacing:.08em;text-transform:uppercase}
+.topbar{max-width:400px;margin:0 auto;padding:16px 0 0;display:flex;gap:6px;flex-wrap:wrap;font:12px -apple-system,"PingFang SC",sans-serif;color:#6b7280}
+.topbar a{color:#2563eb;text-decoration:none}
+</style></head><body>
+<div class="topbar">静态预览（示例数据，不能交互）· 实际页面请打开 <b>48天冲刺看板.html</b></div>
+<div class="pvlabel">今日</div>
+<div class="phone"><div class="wrap">
+<header>
+  <div class="brandrow"><div class="brand"><b>48 天冲刺</b> · 数一 / 英一 / 408</div><button class="settingsBtn">⚙ 设置</button></div>
+  <div class="hero">
+    <div class="count"><span class="num" id="dNum">48</span><span class="unit" id="dUnit">天</span></div>
+    <div class="heroMeta"><div class="l1" id="heroL1">距 2026-12-19 初试</div><div class="l2" id="heroL2">第 1/48 个学习日 · 今天不算还有 48 天</div></div>
+  </div>
+  <div class="dbar"><i id="dbarFill" style="width:2%"></i></div>
+  <div class="dbarTxt"><span>已过 1 / 48 天</span><span id="dbarRight">套卷 1 / 38</span></div>
+</header>
+<nav class="tabs" id="tabs">
+  <button class="tab on">今日</button><button class="tab">套卷</button><button class="tab">技能</button><button class="tab">日历</button><button class="tab">复盘</button>
+</nav><section class="view on">
+  <div class="dayhead">
+    <div>
+      <div class="d1">11/1</div>
+      <div class="d2">周日 · 第 1/48 天 · 开局筑基</div>
+      <div class="d2" style="color:var(--tx-3);font-size:11.5px">净专注 14 小时 · 在桌 18 小时</div>
+    </div>
+    <div class="d3">
+      <div class="stepper">
+        <button data-day="-1" disabled>‹</button>
+        <button data-day="0">今天</button>
+        <button data-day="1" >›</button>
+      </div>
+      <button class="editDay" data-editday="1">✎ 改这天的日程</button>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="kpi math"><b>1/18</b><span>数学套卷</span></div>
+    <div class="kpi cs"><b>0/20</b><span>408 套卷</span></div>
+    <div class="kpi en"><b>4/40</b><span>英语阅读</span></div>
+    <div class="kpi rev"><b>1</b><span>连续打卡天</span></div>
+  </div>
+
+  
+      <div class="focus math">
+        <div class="k">今日套卷 · 数学一</div>
+        <div class="t">2011 数一真题</div>
+        <div class="s">8:30 开考 · 11:30 停笔 · 做完立刻对答案</div>
+        <button class="go" data-jump="m2011">已完成 ✓</button>
+      </div>
+
+  
+  <div class="card mods">
+    <h3>今日各科投入 <span class="sub">三科 13 小时 · 复盘 4 小时 30 分</span></h3>
+    <div class="modsum">
+      <div class="modrow">
+          <span class="mname" style="color:var(--math)">数学一</span>
+          <div class="mbar"><i style="width:31%;background:var(--math)"></i></div>
+          <span class="mval">5 小时 30 分</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:var(--en)">英语一</span>
+          <div class="mbar"><i style="width:20%;background:var(--en)"></i></div>
+          <span class="mval">3 小时 30 分</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:var(--cs)">408</span>
+          <div class="mbar"><i style="width:23%;background:var(--cs)"></i></div>
+          <span class="mval">4 小时</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:#7c3aed">错题复盘</span>
+          <div class="mbar"><i style="width:26%;background:#7c3aed"></i></div>
+          <span class="mval">4 小时 30 分</span>
+        </div>
+    </div>
+    <div class="small muted" style="margin-top:8px">净专注 14 小时（吃饭、午休、休息不算）。改时间或改“科目归属”后这里立刻跟着变。</div>
+  </div>
+
+  <div class="card" style="padding:12px 14px">
+    <h3 style="margin-bottom:6px">今日完成度 <span class="sub">5/27 项 · 19%</span></h3>
+    <div class="dbar" style="margin-top:4px"><i style="width:19%"></i></div>
+    <div class="small muted" style="margin-top:8px">数学第一天：2011 卷，先摸底，别怕分数难看。</div>
+  </div>
+
+  <div class="block done  " data-block="b1">
+      <header data-toggle="b1">
+        <span class="time">6:00–7:00</span>
+        <span class="name">单词背诵</span>
+        <span class="dur">2/2</span>
+        <button class="mini" data-editb="b1" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">1100 高频词第 1 遍 · 遮中文回忆</div>
+        <div class="task done">
+          <label data-task="v1"><span class="cb"></span><span>单词 1：Unit 1–3 高频词（50 分钟，新词 30 + 复习 20）</span></label>
+          
+        </div><div class="task done">
+          <label data-task="v2"><span class="cb"></span><span>生词本：把今天卡住的 10 个抄到小本，睡前再过一遍</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b2">
+      <header data-toggle="b2">
+        <span class="time">7:30–8:00</span>
+        <span class="name">公式背诵</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b2" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">数学/408 公式轮着来</div>
+        <div class="task ">
+          <label data-task="f1"><span class="cb"></span><span>数学公式：高数（极限/中值/积分） 1 页默写</span></label>
+          
+        </div><div class="task ">
+          <label data-task="f2"><span class="cb"></span><span>408 公式：计网（编码/子网/TCP 窗口） 速记</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block done  " data-block="b3">
+      <header data-toggle="b3">
+        <span class="time">8:00–8:30</span>
+        <span class="name">早餐</span>
+        <span class="dur">1/1</span>
+        <button class="mini" data-editb="b3" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">吃完直接进数学，不刷手机</div>
+        <div class="task done">
+          <label data-task="meal1"><span class="cb"></span><span>早餐 30 分钟（脑子里过一遍昨天错题）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   open" data-block="b4">
+      <header data-toggle="b4">
+        <span class="time">8:30–11:30</span>
+        <span class="name">数学套卷 / 复盘</span>
+        <span class="dur">1/2</span>
+        <button class="mini" data-editb="b4" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">2011 数一真题 · 计时 3 小时</div>
+        <div class="task done">
+          <label data-task="m2011"><span class="cb"></span><span>套卷：2011 数一真题（8:30 准时开考，11:30 停笔）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="m-rev"><span class="cb"></span><span>停笔后立刻对答案 + 标三类：会做错 / 不会 / 算错</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block done  " data-block="b5">
+      <header data-toggle="b5">
+        <span class="time">11:30–12:00</span>
+        <span class="name">午餐</span>
+        <span class="dur">1/1</span>
+        <button class="mini" data-editb="b5" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">30 分钟，别刷视频</div>
+        <div class="task done">
+          <label data-task="meal2"><span class="cb"></span><span>午餐 30 分钟</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b6">
+      <header data-toggle="b6">
+        <span class="time">12:00–12:30</span>
+        <span class="name">单词 / 复习代码</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b6" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">低强度，防困</div>
+        <div class="task ">
+          <label data-task="v3"><span class="cb"></span><span>单词 2：昨天 + 今天错词 20 分钟</span></label>
+          
+        </div><div class="task ">
+          <label data-task="d0"><span class="cb"></span><span>代码：昨天写的那道题手写复现一遍（10 分钟）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b7">
+      <header data-toggle="b7">
+        <span class="time">12:30–13:00</span>
+        <span class="name">午休</span>
+        <span class="dur">0/1</span>
+        <button class="mini" data-editb="b7" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">30 分钟，闭眼也算</div>
+        <div class="task ">
+          <label data-task="meal3"><span class="cb"></span><span>午休 30 分钟（不睡就闭眼躺，别刷手机）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b8">
+      <header data-toggle="b8">
+        <span class="time">13:00–14:00</span>
+        <span class="name">单词 / 作文模板</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b8" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">下午第一段，先动笔再动脑</div>
+        <div class="task ">
+          <label data-task="v4"><span class="cb"></span><span>单词 3：新词 20 + 复习 10（30 分钟）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="e1"><span class="cb"></span><span>作文模板：大作文 1 段默写 + 换 3 个话题词改写（30 分钟）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b9">
+      <header data-toggle="b9">
+        <span class="time">14:00–15:00</span>
+        <span class="name">新题型 / 阅读</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b9" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">作文模板</div>
+        <div class="task ">
+          <label data-task="en1"><span class="cb"></span><span>大作文模板 A：背熟 + 默写 1 段（先中文后英文）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="en2"><span class="cb"></span><span>生词/长难句摘 3 条</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b10">
+      <header data-toggle="b10">
+        <span class="time">15:00–16:00</span>
+        <span class="name">休息</span>
+        <span class="dur">0/1</span>
+        <button class="mini" data-editb="b10" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">这一小时是给晚上续航的</div>
+        <div class="task ">
+          <label data-task="rest1"><span class="cb"></span><span>休息 60 分钟：可以躺着，但别刷短视频（设闹钟）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b11">
+      <header data-toggle="b11">
+        <span class="time">16:00–18:00</span>
+        <span class="name">数学查缺补漏</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b11" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">概率：随机事件与一维随机变量（分布函数/密度）</div>
+        <div class="task ">
+          <label data-task="m5"><span class="cb"></span><span>专题：概率：随机事件与一维随机变量（分布函数/密度）（90 分钟）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="m6"><span class="cb"></span><span>查缺：把 2 道一直不会的题写成“解题模板”</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b12">
+      <header data-toggle="b12">
+        <span class="time">18:00–18:30</span>
+        <span class="name">晚餐</span>
+        <span class="dur">0/1</span>
+        <button class="mini" data-editb="b12" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">30 分钟</div>
+        <div class="task ">
+          <label data-task="meal4"><span class="cb"></span><span>晚餐 30 分钟</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b13">
+      <header data-toggle="b13">
+        <span class="time">18:30–19:30</span>
+        <span class="name">408 强化 / 复盘</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b13" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">计网 + 数据结构 + OS</div>
+        <div class="task ">
+          <label data-task="c1"><span class="cb"></span><span>计网强化：计网：体系结构 &amp; 物理层（编码/调制/信道容量）（40 分钟）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="c2"><span class="cb"></span><span>408 昨日错题重做 20 题（20 分钟）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b14">
+      <header data-toggle="b14">
+        <span class="time">19:30–22:30</span>
+        <span class="name">408 复盘</span>
+        <span class="dur">0/2</span>
+        <button class="mini" data-editb="b14" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">当天错题 + 大题书写</div>
+        <div class="task ">
+          <label data-task="c3"><span class="cb"></span><span>408 错题复盘：按知识点归档，不按年份（60 分钟）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="c4"><span class="cb"></span><span>大题默写：数据结构代码 / OS PV / 计网计算 各 1 道（60 分钟）</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b15">
+      <header data-toggle="b15">
+        <span class="time">22:30–23:00</span>
+        <span class="name">休息</span>
+        <span class="dur">0/1</span>
+        <button class="mini" data-editb="b15" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">洗漱 + 走动</div>
+        <div class="task ">
+          <label data-task="rest2"><span class="cb"></span><span>洗漱、走动 30 分钟，离开书桌</span></label>
+          
+        </div>
+      </div>
+    </div><div class="block   " data-block="b16">
+      <header data-toggle="b16">
+        <span class="time">23:00–24:00</span>
+        <span class="name">408 / 数学错题</span>
+        <span class="dur">0/3</span>
+        <button class="mini" data-editb="b16" title="改这一块">✎</button>
+      </header>
+      <div class="body">
+        <div class="small muted" style="padding:2px 0 6px">睡前最后一小时，只做错题</div>
+        <div class="task ">
+          <label data-task="n1"><span class="cb"></span><span>408 错题 30 分钟（当天标记的）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="n2"><span class="cb"></span><span>数学错题 30 分钟（盖住答案重做）</span></label>
+          
+        </div><div class="task ">
+          <label data-task="n3"><span class="cb"></span><span>睡前 5 分钟：默背今天最卡的 1 个公式</span></label>
+          
+        </div>
+      </div>
+    </div>
+
+  <div class="card">
+    <h3>今日复盘 <span class="sub">给 3 分钟，写下来才算复盘</span></h3>
+    <div class="field" style="margin-bottom:10px">
+      <label style="display:block;font-size:12px;color:var(--tx-2);margin-bottom:5px">今日内容（可改：今天到底做哪套/哪两篇）</label>
+      <input class="inp" id="customNote" value="" placeholder="如：2011 数一（只做高数部分）+ 2017 Text3/4">
+    </div>
+    <div class="row2" style="margin-bottom:10px">
+      <div>
+        <div class="small muted" style="margin-bottom:4px">今天错了多少题</div>
+        <input class="inp" id="wrongN" type="number" min="0" max="99" inputmode="numeric" value="0">
+      </div>
+      <div>
+        <div class="small muted" style="margin-bottom:4px">今天在桌时长（按日程自动算）</div>
+        <div class="inp" style="display:flex;align-items:center;color:var(--tx-2)">18 小时 · 净专注 14 小时</div>
+      </div>
+    </div>
+    <textarea class="inp" id="noteBox" placeholder="今天最大收获 / 最卡的地方 / 明天第一件事">数学第一套 82，概率大题卡住，明天先补概率。</textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn" id="saveNote">保存今日记录</button>
+      <button class="btn ghost" id="addCustom">+ 加一条任务</button>
+      <button class="btn ghost" id="addMistake">+ 记一道错题</button>
+    </div>
+  </div>
+
+  <div class="note" style="padding:4px 2px 10px">
+    时间不准？点日期右边的「✎ 改这天的日程」自己调。数据只存在这台设备的浏览器里，<b>换手机或清缓存前</b>到「设置 → 导出数据」存一份 JSON。
+  </div></section></div></div>
+<div class="pvlabel">套卷</div>
+<div class="phone"><div class="wrap"><section class="view on">
+    <div class="card">
+      <h3>套卷总览 <span class="sub">数学 16+2 · 408 18+2 · 共 38 场</span></h3>
+      <div class="small muted" style="margin-bottom:10px">奇数日做数学、偶数日做 408，两科永远不会撞在同一天。点「打卡」记完成，「复盘」表示错题已处理。</div>
+      
+    <div class="subjtitle"><span class="chip math">数学一</span><span>真题 2011–2026</span><span class="ln"></span></div>
+    <div class="exam done">
+        <div class="no">11/1</div>
+        <div class="tt"><b>2011 数一真题 ✓</b>
+          <span>2026-11-01 周日</span></div>
+        <div class="acts">
+          <button class="mini on" data-ex="m2011">已完成</button>
+          <button class="mini rev on" data-rev="m2011">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/3</div>
+        <div class="tt"><b>2012 数一真题 </b>
+          <span>2026-11-03 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2012">打卡</button>
+          <button class="mini rev " data-rev="m2012">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/5</div>
+        <div class="tt"><b>2013 数一真题 </b>
+          <span>2026-11-05 周四</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2013">打卡</button>
+          <button class="mini rev " data-rev="m2013">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/7</div>
+        <div class="tt"><b>2014 数一真题 </b>
+          <span>2026-11-07 周六</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2014">打卡</button>
+          <button class="mini rev " data-rev="m2014">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/9</div>
+        <div class="tt"><b>2015 数一真题 </b>
+          <span>2026-11-09 周一</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2015">打卡</button>
+          <button class="mini rev " data-rev="m2015">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/11</div>
+        <div class="tt"><b>2016 数一真题 </b>
+          <span>2026-11-11 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2016">打卡</button>
+          <button class="mini rev " data-rev="m2016">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/13</div>
+        <div class="tt"><b>2017 数一真题 </b>
+          <span>2026-11-13 周五</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2017">打卡</button>
+          <button class="mini rev " data-rev="m2017">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/15</div>
+        <div class="tt"><b>2018 数一真题 </b>
+          <span>2026-11-15 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2018">打卡</button>
+          <button class="mini rev " data-rev="m2018">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/17</div>
+        <div class="tt"><b>2019 数一真题 </b>
+          <span>2026-11-17 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2019">打卡</button>
+          <button class="mini rev " data-rev="m2019">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/19</div>
+        <div class="tt"><b>2020 数一真题 </b>
+          <span>2026-11-19 周四</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2020">打卡</button>
+          <button class="mini rev " data-rev="m2020">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/21</div>
+        <div class="tt"><b>2021 数一真题 </b>
+          <span>2026-11-21 周六</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2021">打卡</button>
+          <button class="mini rev " data-rev="m2021">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/23</div>
+        <div class="tt"><b>2022 数一真题 </b>
+          <span>2026-11-23 周一</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2022">打卡</button>
+          <button class="mini rev " data-rev="m2022">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/25</div>
+        <div class="tt"><b>2023 数一真题 </b>
+          <span>2026-11-25 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2023">打卡</button>
+          <button class="mini rev " data-rev="m2023">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/27</div>
+        <div class="tt"><b>2024 数一真题 </b>
+          <span>2026-11-27 周五</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2024">打卡</button>
+          <button class="mini rev " data-rev="m2024">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/29</div>
+        <div class="tt"><b>2025 数一真题 </b>
+          <span>2026-11-29 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2025">打卡</button>
+          <button class="mini rev " data-rev="m2025">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">12/1</div>
+        <div class="tt"><b>2026 数一真题 </b>
+          <span>2026-12-01 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="m2026">打卡</button>
+          <button class="mini rev " data-rev="m2026">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">模拟</div>
+        <div class="tt"><b>数一全真模拟① </b>
+          <span>2026-12-08 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="mm1">打卡</button>
+          <button class="mini rev " data-rev="mm1">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">模拟</div>
+        <div class="tt"><b>数一全真模拟② </b>
+          <span>2026-12-12 周六</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="mm2">打卡</button>
+          <button class="mini rev " data-rev="mm2">复盘</button>
+        </div>
+      </div>
+      
+    <div class="subjtitle"><span class="chip cs">408</span><span>真题 2009–2026</span><span class="ln"></span></div>
+    <div class="exam ">
+        <div class="no">11/2</div>
+        <div class="tt"><b>2009 408 真题 </b>
+          <span>2026-11-02 周一</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2009">打卡</button>
+          <button class="mini rev " data-rev="c2009">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/4</div>
+        <div class="tt"><b>2010 408 真题 </b>
+          <span>2026-11-04 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2010">打卡</button>
+          <button class="mini rev " data-rev="c2010">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/6</div>
+        <div class="tt"><b>2011 408 真题 </b>
+          <span>2026-11-06 周五</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2011">打卡</button>
+          <button class="mini rev " data-rev="c2011">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/8</div>
+        <div class="tt"><b>2012 408 真题 </b>
+          <span>2026-11-08 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2012">打卡</button>
+          <button class="mini rev " data-rev="c2012">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/10</div>
+        <div class="tt"><b>2013 408 真题 </b>
+          <span>2026-11-10 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2013">打卡</button>
+          <button class="mini rev " data-rev="c2013">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/12</div>
+        <div class="tt"><b>2014 408 真题 </b>
+          <span>2026-11-12 周四</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2014">打卡</button>
+          <button class="mini rev " data-rev="c2014">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/14</div>
+        <div class="tt"><b>2015 408 真题 </b>
+          <span>2026-11-14 周六</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2015">打卡</button>
+          <button class="mini rev " data-rev="c2015">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/16</div>
+        <div class="tt"><b>2016 408 真题 </b>
+          <span>2026-11-16 周一</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2016">打卡</button>
+          <button class="mini rev " data-rev="c2016">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/18</div>
+        <div class="tt"><b>2017 408 真题 </b>
+          <span>2026-11-18 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2017">打卡</button>
+          <button class="mini rev " data-rev="c2017">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/20</div>
+        <div class="tt"><b>2018 408 真题 </b>
+          <span>2026-11-20 周五</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2018">打卡</button>
+          <button class="mini rev " data-rev="c2018">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/22</div>
+        <div class="tt"><b>2019 408 真题 </b>
+          <span>2026-11-22 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2019">打卡</button>
+          <button class="mini rev " data-rev="c2019">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/24</div>
+        <div class="tt"><b>2020 408 真题 </b>
+          <span>2026-11-24 周二</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2020">打卡</button>
+          <button class="mini rev " data-rev="c2020">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/26</div>
+        <div class="tt"><b>2021 408 真题 </b>
+          <span>2026-11-26 周四</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2021">打卡</button>
+          <button class="mini rev " data-rev="c2021">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/28</div>
+        <div class="tt"><b>2022 408 真题 </b>
+          <span>2026-11-28 周六</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2022">打卡</button>
+          <button class="mini rev " data-rev="c2022">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">11/30</div>
+        <div class="tt"><b>2023 408 真题 </b>
+          <span>2026-11-30 周一</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2023">打卡</button>
+          <button class="mini rev " data-rev="c2023">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">12/2</div>
+        <div class="tt"><b>2024 408 真题 </b>
+          <span>2026-12-02 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2024">打卡</button>
+          <button class="mini rev " data-rev="c2024">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">12/4</div>
+        <div class="tt"><b>2025 408 真题 </b>
+          <span>2026-12-04 周五</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2025">打卡</button>
+          <button class="mini rev " data-rev="c2025">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">12/6</div>
+        <div class="tt"><b>2026 408 真题 </b>
+          <span>2026-12-06 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="c2026">打卡</button>
+          <button class="mini rev " data-rev="c2026">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">模拟</div>
+        <div class="tt"><b>408 全真模拟① </b>
+          <span>2026-12-09 周三</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="cm1">打卡</button>
+          <button class="mini rev " data-rev="cm1">复盘</button>
+        </div>
+      </div><div class="exam ">
+        <div class="no">模拟</div>
+        <div class="tt"><b>408 全真模拟② </b>
+          <span>2026-12-13 周日</span></div>
+        <div class="acts">
+          <button class="mini " data-ex="cm2">打卡</button>
+          <button class="mini rev " data-rev="cm2">复盘</button>
+        </div>
+      </div>
+      <hr class="sep">
+      <div class="small muted">没按计划日期做也没关系：直接在这里打卡，日历会按实际完成时间重画。</div>
+    </div></section></div></div>
+<div class="pvlabel">技能</div>
+<div class="phone"><div class="wrap"><section class="view on">
+    <div class="card">
+      <h3>英语阅读进度 <span class="sub">4/40 篇 · 新题型 0/10</span></h3>
+      <div class="dbar" style="margin:2px 0 8px"><i style="width:10%"></i></div>
+      <div class="small muted" style="margin-bottom:8px">下一篇：<b style="color:var(--tx)">2018 Text1</b> · 下个新题型：<b style="color:var(--tx)">2017 新题型</b></div>
+      <div><button class="chip en on" data-rd="r2017-1" style="margin:0 4px 6px 0;font-size:10.5px">✓ 2017T1</button><button class="chip en on" data-rd="r2017-2" style="margin:0 4px 6px 0;font-size:10.5px">✓ 2017T2</button><button class="chip en on" data-rd="r2017-3" style="margin:0 4px 6px 0;font-size:10.5px">✓ 2017T3</button><button class="chip en on" data-rd="r2017-4" style="margin:0 4px 6px 0;font-size:10.5px">✓ 2017T4</button><button class="chip " data-rd="r2018-1" style="margin:0 4px 6px 0;font-size:10.5px">2018T1</button><button class="chip " data-rd="r2018-2" style="margin:0 4px 6px 0;font-size:10.5px">2018T2</button><button class="chip " data-rd="r2018-3" style="margin:0 4px 6px 0;font-size:10.5px">2018T3</button><button class="chip " data-rd="r2018-4" style="margin:0 4px 6px 0;font-size:10.5px">2018T4</button><button class="chip " data-rd="r2019-1" style="margin:0 4px 6px 0;font-size:10.5px">2019T1</button><button class="chip " data-rd="r2019-2" style="margin:0 4px 6px 0;font-size:10.5px">2019T2</button><button class="chip " data-rd="r2019-3" style="margin:0 4px 6px 0;font-size:10.5px">2019T3</button><button class="chip " data-rd="r2019-4" style="margin:0 4px 6px 0;font-size:10.5px">2019T4</button><button class="chip " data-rd="r2020-1" style="margin:0 4px 6px 0;font-size:10.5px">2020T1</button><button class="chip " data-rd="r2020-2" style="margin:0 4px 6px 0;font-size:10.5px">2020T2</button><button class="chip " data-rd="r2020-3" style="margin:0 4px 6px 0;font-size:10.5px">2020T3</button><button class="chip " data-rd="r2020-4" style="margin:0 4px 6px 0;font-size:10.5px">2020T4</button><button class="chip " data-rd="r2021-1" style="margin:0 4px 6px 0;font-size:10.5px">2021T1</button><button class="chip " data-rd="r2021-2" style="margin:0 4px 6px 0;font-size:10.5px">2021T2</button><button class="chip " data-rd="r2021-3" style="margin:0 4px 6px 0;font-size:10.5px">2021T3</button><button class="chip " data-rd="r2021-4" style="margin:0 4px 6px 0;font-size:10.5px">2021T4</button><button class="chip " data-rd="r2022-1" style="margin:0 4px 6px 0;font-size:10.5px">2022T1</button><button class="chip " data-rd="r2022-2" style="margin:0 4px 6px 0;font-size:10.5px">2022T2</button><button class="chip " data-rd="r2022-3" style="margin:0 4px 6px 0;font-size:10.5px">2022T3</button><button class="chip " data-rd="r2022-4" style="margin:0 4px 6px 0;font-size:10.5px">2022T4</button><button class="chip " data-rd="r2023-1" style="margin:0 4px 6px 0;font-size:10.5px">2023T1</button><button class="chip " data-rd="r2023-2" style="margin:0 4px 6px 0;font-size:10.5px">2023T2</button><button class="chip " data-rd="r2023-3" style="margin:0 4px 6px 0;font-size:10.5px">2023T3</button><button class="chip " data-rd="r2023-4" style="margin:0 4px 6px 0;font-size:10.5px">2023T4</button><button class="chip " data-rd="r2024-1" style="margin:0 4px 6px 0;font-size:10.5px">2024T1</button><button class="chip " data-rd="r2024-2" style="margin:0 4px 6px 0;font-size:10.5px">2024T2</button><button class="chip " data-rd="r2024-3" style="margin:0 4px 6px 0;font-size:10.5px">2024T3</button><button class="chip " data-rd="r2024-4" style="margin:0 4px 6px 0;font-size:10.5px">2024T4</button><button class="chip " data-rd="r2025-1" style="margin:0 4px 6px 0;font-size:10.5px">2025T1</button><button class="chip " data-rd="r2025-2" style="margin:0 4px 6px 0;font-size:10.5px">2025T2</button><button class="chip " data-rd="r2025-3" style="margin:0 4px 6px 0;font-size:10.5px">2025T3</button><button class="chip " data-rd="r2025-4" style="margin:0 4px 6px 0;font-size:10.5px">2025T4</button><button class="chip " data-rd="r2026-1" style="margin:0 4px 6px 0;font-size:10.5px">2026T1</button><button class="chip " data-rd="r2026-2" style="margin:0 4px 6px 0;font-size:10.5px">2026T2</button><button class="chip " data-rd="r2026-3" style="margin:0 4px 6px 0;font-size:10.5px">2026T3</button><button class="chip " data-rd="r2026-4" style="margin:0 4px 6px 0;font-size:10.5px">2026T4</button></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--tx-2)">新题型（2017–2026）</div>
+      <div style="margin-top:6px"><button class="chip " data-nt="n2017" style="margin:0 4px 6px 0;font-size:10.5px">2017</button><button class="chip " data-nt="n2018" style="margin:0 4px 6px 0;font-size:10.5px">2018</button><button class="chip " data-nt="n2019" style="margin:0 4px 6px 0;font-size:10.5px">2019</button><button class="chip " data-nt="n2020" style="margin:0 4px 6px 0;font-size:10.5px">2020</button><button class="chip " data-nt="n2021" style="margin:0 4px 6px 0;font-size:10.5px">2021</button><button class="chip " data-nt="n2022" style="margin:0 4px 6px 0;font-size:10.5px">2022</button><button class="chip " data-nt="n2023" style="margin:0 4px 6px 0;font-size:10.5px">2023</button><button class="chip " data-nt="n2024" style="margin:0 4px 6px 0;font-size:10.5px">2024</button><button class="chip " data-nt="n2025" style="margin:0 4px 6px 0;font-size:10.5px">2025</button><button class="chip " data-nt="n2026" style="margin:0 4px 6px 0;font-size:10.5px">2026</button></div>
+    </div>
+
+    <div class="card">
+      <h3>数据结构代码题 <span class="sub">累计 13 道</span></h3>
+      <div class="small muted" style="margin-bottom:10px">每天 17:30–18:50 手写一道，不求量，求能在纸上跑通。做完点 +1。</div>
+      <div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">线性表/链表</span>
+      <div class="bar"><i style="width:33%"></i></div>
+      <span class="pct">4/12</span>
+      <button class="mini" data-ds="linear" style="padding:3px 8px">+1</button>
+    </div><div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">栈·队列·串</span>
+      <div class="bar"><i style="width:0%"></i></div>
+      <span class="pct">0/8</span>
+      <button class="mini" data-ds="stack" style="padding:3px 8px">+1</button>
+    </div><div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">树与二叉树</span>
+      <div class="bar"><i style="width:43%"></i></div>
+      <span class="pct">6/14</span>
+      <button class="mini" data-ds="tree" style="padding:3px 8px">+1</button>
+    </div><div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">图（BFS/DFS/最短路/MST）</span>
+      <div class="bar"><i style="width:25%"></i></div>
+      <span class="pct">3/12</span>
+      <button class="mini" data-ds="graph" style="padding:3px 8px">+1</button>
+    </div><div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">排序与查找</span>
+      <div class="bar"><i style="width:0%"></i></div>
+      <span class="pct">0/10</span>
+      <button class="mini" data-ds="sort" style="padding:3px 8px">+1</button>
+    </div><div class="wk">
+      <span class="lbl" style="width:150px;color:var(--tx-2)">算法设计题（DP/贪心/分治）</span>
+      <div class="bar"><i style="width:0%"></i></div>
+      <span class="pct">0/10</span>
+      <button class="mini" data-ds="dp" style="padding:3px 8px">+1</button>
+    </div>
+    </div>
+
+    <div class="card">
+      <h3>作文模板 <span class="sub">5 套 · 反复默写</span></h3>
+      <div class="task"><label data-tpl="tpl1"><span class="cb" style="border-radius:5px"></span><span>大作文模板 A（现象/观点类）</span></label></div><div class="task"><label data-tpl="tpl2"><span class="cb" style="border-radius:5px"></span><span>大作文模板 B（正反论证类）</span></label></div><div class="task"><label data-tpl="tpl3"><span class="cb" style="border-radius:5px"></span><span>大作文模板 C（建议/措施类）</span></label></div><div class="task"><label data-tpl="tpl4"><span class="cb" style="border-radius:5px"></span><span>小作文模板 A（书信/建议信）</span></label></div><div class="task"><label data-tpl="tpl5"><span class="cb" style="border-radius:5px"></span><span>小作文模板 B（通知/告示）</span></label></div>
+      <div class="small muted" style="margin-top:6px">模板不是背完就会用：每 3 天用真题题目套写一次。</div>
+    </div></section></div></div>
+<div class="pvlabel">日历</div>
+<div class="phone"><div class="wrap"><section class="view on">
+    <div class="card">
+      <h3>48 天总览 <span class="sub">点格子跳到那一天</span></h3>
+      <div class="cal"><div class="wd">日</div><div class="wd">一</div><div class="wd">二</div><div class="wd">三</div><div class="wd">四</div><div class="wd">五</div><div class="wd">六</div><div class="cell math today" data-cal="2026-11-01" title="2026-11-01 · 完成 19%">
+      <div class="d">1</div>
+      <div class="dot">11·数</div>
+      <div class="fill" style="height:17%"></div>
+      
+    </div><div class="cell cs" data-cal="2026-11-02" title="2026-11-02 · 完成 0%">
+      <div class="d">2</div>
+      <div class="dot">09·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-03" title="2026-11-03 · 完成 0%">
+      <div class="d">3</div>
+      <div class="dot">12·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-04" title="2026-11-04 · 完成 0%">
+      <div class="d">4</div>
+      <div class="dot">10·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-05" title="2026-11-05 · 完成 0%">
+      <div class="d">5</div>
+      <div class="dot">13·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-06" title="2026-11-06 · 完成 0%">
+      <div class="d">6</div>
+      <div class="dot">11·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-07" title="2026-11-07 · 完成 0%">
+      <div class="d">7</div>
+      <div class="dot">14·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-08" title="2026-11-08 · 完成 0%">
+      <div class="d">8</div>
+      <div class="dot">12·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-09" title="2026-11-09 · 完成 0%">
+      <div class="d">9</div>
+      <div class="dot">15·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-10" title="2026-11-10 · 完成 0%">
+      <div class="d">10</div>
+      <div class="dot">13·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-11" title="2026-11-11 · 完成 0%">
+      <div class="d">11</div>
+      <div class="dot">16·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-12" title="2026-11-12 · 完成 0%">
+      <div class="d">12</div>
+      <div class="dot">14·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-13" title="2026-11-13 · 完成 0%">
+      <div class="d">13</div>
+      <div class="dot">17·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-14" title="2026-11-14 · 完成 0%">
+      <div class="d">14</div>
+      <div class="dot">15·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-15" title="2026-11-15 · 完成 0%">
+      <div class="d">15</div>
+      <div class="dot">18·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-16" title="2026-11-16 · 完成 0%">
+      <div class="d">16</div>
+      <div class="dot">16·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-17" title="2026-11-17 · 完成 0%">
+      <div class="d">17</div>
+      <div class="dot">19·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-18" title="2026-11-18 · 完成 0%">
+      <div class="d">18</div>
+      <div class="dot">17·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-19" title="2026-11-19 · 完成 0%">
+      <div class="d">19</div>
+      <div class="dot">20·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-20" title="2026-11-20 · 完成 0%">
+      <div class="d">20</div>
+      <div class="dot">18·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-21" title="2026-11-21 · 完成 0%">
+      <div class="d">21</div>
+      <div class="dot">21·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-22" title="2026-11-22 · 完成 0%">
+      <div class="d">22</div>
+      <div class="dot">19·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-23" title="2026-11-23 · 完成 0%">
+      <div class="d">23</div>
+      <div class="dot">22·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-24" title="2026-11-24 · 完成 0%">
+      <div class="d">24</div>
+      <div class="dot">20·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-25" title="2026-11-25 · 完成 0%">
+      <div class="d">25</div>
+      <div class="dot">23·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-26" title="2026-11-26 · 完成 0%">
+      <div class="d">26</div>
+      <div class="dot">21·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-27" title="2026-11-27 · 完成 0%">
+      <div class="d">27</div>
+      <div class="dot">24·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-28" title="2026-11-28 · 完成 0%">
+      <div class="d">28</div>
+      <div class="dot">22·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-11-29" title="2026-11-29 · 完成 0%">
+      <div class="d">29</div>
+      <div class="dot">25·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-11-30" title="2026-11-30 · 完成 0%">
+      <div class="d">30</div>
+      <div class="dot">23·408</div>
+      
+      
+    </div><div class="cell math" data-cal="2026-12-01" title="2026-12-01 · 完成 0%">
+      <div class="d">1</div>
+      <div class="dot">26·数</div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-12-02" title="2026-12-02 · 完成 0%">
+      <div class="d">2</div>
+      <div class="dot">24·408</div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-03" title="2026-12-03 · 完成 0%">
+      <div class="d">3</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-12-04" title="2026-12-04 · 完成 0%">
+      <div class="d">4</div>
+      <div class="dot">25·408</div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-05" title="2026-12-05 · 完成 0%">
+      <div class="d">5</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell cs" data-cal="2026-12-06" title="2026-12-06 · 完成 0%">
+      <div class="d">6</div>
+      <div class="dot">26·408</div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-07" title="2026-12-07 · 完成 0%">
+      <div class="d">7</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell mock" data-cal="2026-12-08" title="2026-12-08 · 完成 0%">
+      <div class="d">8</div>
+      <div class="dot">模拟</div>
+      
+      
+    </div><div class="cell mock" data-cal="2026-12-09" title="2026-12-09 · 完成 0%">
+      <div class="d">9</div>
+      <div class="dot">模拟</div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-10" title="2026-12-10 · 完成 0%">
+      <div class="d">10</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-11" title="2026-12-11 · 完成 0%">
+      <div class="d">11</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell mock" data-cal="2026-12-12" title="2026-12-12 · 完成 0%">
+      <div class="d">12</div>
+      <div class="dot">模拟</div>
+      
+      
+    </div><div class="cell mock" data-cal="2026-12-13" title="2026-12-13 · 完成 0%">
+      <div class="d">13</div>
+      <div class="dot">模拟</div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-14" title="2026-12-14 · 完成 0%">
+      <div class="d">14</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-15" title="2026-12-15 · 完成 0%">
+      <div class="d">15</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-16" title="2026-12-16 · 完成 0%">
+      <div class="d">16</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-17" title="2026-12-17 · 完成 0%">
+      <div class="d">17</div>
+      <div class="dot"></div>
+      
+      
+    </div><div class="cell rev" data-cal="2026-12-18" title="2026-12-18 · 完成 0%">
+      <div class="d">18</div>
+      <div class="dot"></div>
+      
+      
+    </div></div>
+      <div class="legend" style="margin-top:10px">
+        <span><i style="background:#2563eb"></i>数学卷</span>
+        <span><i style="background:#d97706"></i>408 卷</span>
+        <span><i style="background:#7c3aed"></i>模拟</span>
+        <span><i style="background:#9ca3af"></i>复盘/缓冲</span>
+        <span style="color:var(--tx-3)">底部高度＝当天完成度</span>
+      </div>
+    </div>
+
+    
+    <div class="card mods">
+      <h3>48 天各科累计 <span class="sub">合计 837 小时</span></h3>
+      <div class="modrow">
+          <span class="mname" style="color:var(--math)">数学一</span>
+          <div class="mbar"><i style="width:31%;background:var(--math)"></i></div>
+          <span class="mval">259h</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:var(--en)">英语一</span>
+          <div class="mbar"><i style="width:20%;background:var(--en)"></i></div>
+          <span class="mval">168h</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:var(--cs)">408</span>
+          <div class="mbar"><i style="width:22%;background:var(--cs)"></i></div>
+          <span class="mval">188h</span>
+        </div><div class="modrow">
+          <span class="mname" style="color:#7c3aed">错题复盘</span>
+          <div class="mbar"><i style="width:27%;background:#7c3aed"></i></div>
+          <span class="mval">222h</span>
+        </div>
+      <div class="small muted" style="margin-top:8px">按当前日程估算（每天改时间/改科目后这里同步变）。三科合计约 615 小时。</div>
+    </div>
+
+    <div class="card">
+      <h3>套卷消耗曲线 <span class="sub">理想 vs 实际</span></h3>
+      <svg class="chart" viewBox="0 0 560 150" preserveAspectRatio="none">
+    <line x1="26" y1="132" x2="552" y2="132" stroke="#e5e7eb"/>
+    <line x1="26" y1="10" x2="26" y2="132" stroke="#e5e7eb"/>
+    <polyline points="26,10 37.191489361702125,12.595744680851068 48.38297872340426,15.191489361702121 59.57446808510638,17.787234042553187 70.76595744680851,20.382978723404243 81.95744680851064,22.978723404255312 93.14893617021276,25.574468085106393 104.34042553191489,28.170212765957444 115.53191489361703,30.765957446808514 126.72340425531915,33.36170212765957 137.91489361702128,35.95744680851064 149.1063829787234,38.5531914893617 160.29787234042553,41.14893617021277 171.48936170212767,43.744680851063826 182.68085106382978,46.3404255319149 193.87234042553192,48.936170212765944 205.06382978723406,51.53191489361703 216.25531914893617,54.12765957446808 227.4468085106383,56.723404255319146 238.63829787234042,59.319148936170215 249.82978723404256,61.914893617021285 261.02127659574467,64.51063829787233 272.2127659574468,67.1063829787234 283.40425531914894,69.70212765957446 294.59574468085106,72.29787234042554 305.78723404255317,74.8936170212766 316.97872340425533,77.48936170212765 328.17021276595744,80.08510638297874 339.36170212765956,82.68085106382978 350.5531914893617,85.27659574468085 361.74468085106383,87.87234042553192 372.93617021276594,90.46808510638297 384.1276595744681,93.06382978723403 395.3191489361702,95.65957446808511 406.51063829787233,98.25531914893617 417.70212765957444,100.85106382978724 428.8936170212766,103.44680851063829 440.0851063829787,106.04255319148936 451.27659574468083,108.63829787234043 462.468085106383,111.23404255319149 473.6595744680851,113.82978723404257 484.8510638297872,116.42553191489361 496.0425531914894,119.02127659574468 507.2340425531915,121.61702127659575 518.4255319148936,124.2127659574468 529.6170212765958,126.80851063829788 540.8085106382979,129.40425531914894 552,132" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 4"/>
+    <polyline points="26,13.210526315789469" fill="none" stroke="#059669" stroke-width="2.6" stroke-linejoin="round"/>
+    <circle cx="26" cy="13.210526315789469" r="3.5" fill="#059669"/>
+    <text x="26" y="145" fill="#9ca3af" font-size="9">11/1</text>
+    <text x="552" y="145" fill="#9ca3af" font-size="9" text-anchor="end">12/18</text>
+    <text x="28" y="19" fill="#9ca3af" font-size="9">剩 38</text>
+    <text x="28" y="128" fill="#9ca3af" font-size="9">0</text>
+  </svg>
+      <div class="legend"><span><i style="background:#2563eb"></i>按计划剩余</span><span><i style="background:#059669"></i>实际剩余</span></div>
+    </div>
+
+    <div class="card">
+      <h3>三科完成度</h3>
+      <div class="rings">
+        <div class="ring">
+    <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#eef0f4" stroke-width="7"/>
+    <circle cx="42" cy="42" r="34" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="213.62830044410595" stroke-dashoffset="201.7600615305445" transform="rotate(-90 42 42)"/></svg>
+    <div class="v">1/18</div><div class="l">数学 18 场</div>
+  </div>
+        <div class="ring">
+    <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#eef0f4" stroke-width="7"/>
+    <circle cx="42" cy="42" r="34" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="213.62830044410595" stroke-dashoffset="213.62830044410595" transform="rotate(-90 42 42)"/></svg>
+    <div class="v">0/20</div><div class="l">408 20 场</div>
+  </div>
+        <div class="ring">
+    <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#eef0f4" stroke-width="7"/>
+    <circle cx="42" cy="42" r="34" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="213.62830044410595" stroke-dashoffset="192.26547039969535" transform="rotate(-90 42 42)"/></svg>
+    <div class="v">4/40</div><div class="l">阅读 40 篇</div>
+  </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>每周完成度</h3>
+      <div class="wk"><span class="lbl">第1周</span><div class="bar"><i style="width:3%"></i></div><span class="pct">3%</span></div><div class="wk"><span class="lbl">第2周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div><div class="wk"><span class="lbl">第3周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div><div class="wk"><span class="lbl">第4周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div><div class="wk"><span class="lbl">第5周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div><div class="wk"><span class="lbl">第6周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div><div class="wk"><span class="lbl">第7周</span><div class="bar"><i style="width:0%"></i></div><span class="pct">0%</span></div>
+    </div></section></div></div>
+<div class="pvlabel">复盘</div>
+<div class="phone"><div class="wrap"><section class="view on">
+    <div class="card">
+      <h3>错题卡片 <span class="sub">按日期间隔复习：1 → 3 → 7 → 15 天</span></h3>
+      <div class="small" style="color:#b45309;margin-bottom:8px">今天有 1 张到期，先过一遍再去开新卷。</div>
+      <button class="btn sm" id="newMistake">+ 记一道错题</button>
+    </div>
+    
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="chip cs">408</span>
+          <span class="small muted">2026-11-01</span>
+          <span class="pill" style="margin-left:auto">下次 2026-11-02</span>
+        </div>
+        <b style="font-size:13.5px">2009 408 计网：子网划分算错掩码</b>
+        <p style="margin:4px 0 0;font-size:12.5px;color:var(--tx-2)">错因：掩码位数数错</p>
+        <p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-2)">正解/方法：先写二进制再数 1</p>
+        <div class="row" style="display:flex;gap:8px;margin-top:10px">
+          <button class="mini " data-mrev="x2">再消化一次</button>
+          <button class="mini" data-mdel="x2" style="color:#dc2626">删除</button>
+        </div>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="chip math">数学一</span>
+          <span class="small muted">2026-11-01</span>
+          <span class="pill" style="margin-left:auto">下次 2026-11-01</span>
+        </div>
+        <b style="font-size:13.5px">2011 数一 T19：级数求和漏了端点</b>
+        <p style="margin:4px 0 0;font-size:12.5px;color:var(--tx-2)">错因：端点单独讨论</p>
+        <p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-2)">正解/方法：先看收敛半径再验端点</p>
+        <div class="row" style="display:flex;gap:8px;margin-top:10px">
+          <button class="mini " data-mrev="x1">再消化一次</button>
+          <button class="mini" data-mdel="x1" style="color:#dc2626">删除</button>
+        </div>
+      </div></section></div></div>
+</body></html>
